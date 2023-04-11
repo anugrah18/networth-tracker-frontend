@@ -21,6 +21,10 @@ export default function Login() {
     setEnteredPassword(e.target.value);
   };
 
+  const persistentLoginHandler = (e) => {
+    setIsLoginPersistent(!isLoginPersistent);
+  };
+
   const submitHandler = async (e) => {
     try {
       e.preventDefault();
@@ -41,7 +45,16 @@ export default function Login() {
         req,
         config
       );
-      console.log(res.data);
+      const access_token = res.data.token;
+
+      if (isLoginPersistent) {
+        localStorage.setItem("networthtracker-access-token", access_token);
+        sessionStorage.removeItem("networthtracker-access-token");
+      } else {
+        localStorage.removeItem("networthtracker-access-token");
+        sessionStorage.setItem("networthtracker-access-token", access_token);
+      }
+
       setError(false);
       setErrorMessage("");
     } catch (error) {
@@ -86,6 +99,7 @@ export default function Login() {
             type="checkbox"
             value=""
             className="h-4 w-4 accent-lime-500  text-white rounded cursor-pointer"
+            onChange={persistentLoginHandler}
           />
           <label
             htmlFor="remember-me-checkbox"
@@ -105,11 +119,11 @@ export default function Login() {
         </button>
 
         {/* Forgot Password */}
-        <div className="w-full pt-10 text-center text-green-600 font-bold hover:text-lime-500">
+        {/* <div className="w-full pt-10 text-center text-green-600 font-bold hover:text-lime-500">
           <a href="/">Forgot Password?</a>
-        </div>
+        </div> */}
 
-        <hr className="w-64 h-0.5 mx-auto my-2 bg-gray-300 border-0 rounded md:my-10 "></hr>
+        <hr className="w-64 h-0.5 mx-auto my-10 bg-gray-300 border-0 rounded md:my-10 "></hr>
 
         <p className="w-full mt-10 text-center">Dont have an account?</p>
         {/* Sign up */}
