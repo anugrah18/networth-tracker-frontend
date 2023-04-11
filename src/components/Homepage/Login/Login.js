@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Login.css";
 import logo from "../../../images/bull-green.png";
 import {
@@ -6,12 +6,15 @@ import {
   API_LOGIN_URL,
 } from "../../../utility/backendAPILinks";
 import axios from "axios";
+import { UserContext } from "../../../contexts/UserContext";
 export default function Login() {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
   const [isLoginPersistent, setIsLoginPersistent] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const { setUserState } = useContext(UserContext);
 
   const emailChangeHandler = (e) => {
     setEnteredEmail(e.target.value);
@@ -47,6 +50,16 @@ export default function Login() {
       );
       const access_token = res.data.token;
 
+      const user = {
+        userId: res.data.userId,
+        firstName: res.data.firstName,
+        lastName: res.data.lastName,
+        email: res.data.email,
+        isAdmin: res.data.isAdmin,
+      };
+
+      setUserState({ user });
+
       if (isLoginPersistent) {
         localStorage.setItem("networthtracker-access-token", access_token);
         sessionStorage.removeItem("networthtracker-access-token");
@@ -59,7 +72,11 @@ export default function Login() {
       setErrorMessage("");
     } catch (error) {
       setError(true);
-      setErrorMessage(error.response.data.message);
+      setErrorMessage(
+        "Error : Could not login , please enter correct credentials and try again."
+      );
+      sessionStorage.removeItem("networthtracker-access-token");
+      localStorage.removeItem("networthtracker-access-token");
     } finally {
       setEnteredEmail("");
       setEnteredPassword("");
@@ -74,6 +91,7 @@ export default function Login() {
         <div className="flex items-center justify-center mb-4">
           <img alt="logo" src={logo} className="h-32"></img>
         </div>
+
         {/* Email */}
         <label className="text-gray-700 font-bold">Email</label>
         <input
