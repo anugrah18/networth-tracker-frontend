@@ -10,6 +10,8 @@ export default function Login() {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
   const [isLoginPersistent, setIsLoginPersistent] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const emailChangeHandler = (e) => {
     setEnteredEmail(e.target.value);
@@ -40,8 +42,11 @@ export default function Login() {
         config
       );
       console.log(res.data);
+      setError(false);
+      setErrorMessage("");
     } catch (error) {
-      console.log(error.response.data.message);
+      setError(true);
+      setErrorMessage(error.response.data.message);
     } finally {
       setEnteredEmail("");
       setEnteredPassword("");
@@ -50,6 +55,7 @@ export default function Login() {
 
   return (
     <div className="w-96 p-6 rounded shadow-sm z-10 bg-white">
+      {error && <p className="text-red-500 font-bold">{errorMessage}</p>}
       <form>
         {/* Logo */}
         <div className="flex items-center justify-center mb-4">
