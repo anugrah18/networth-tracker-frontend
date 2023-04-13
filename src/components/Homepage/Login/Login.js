@@ -106,7 +106,7 @@ export default function Login() {
         <input
           className="w-full py-2 bg-emerald-700 text-white px-1 outline-none mb-4"
           type="password"
-          placeholder="at least 8 characters"
+          placeholder="password"
           onChange={passwordChangeHandler}
           value={enteredPassword}
         />
