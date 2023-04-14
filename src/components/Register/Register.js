@@ -3,84 +3,63 @@ import "./Register.css";
 import logo from "../../images/bull-green.png";
 import { API_DOMAIN_URL, API_LOGIN_URL } from "../../utility/backendAPILinks";
 import axios from "axios";
+import { FormikProvider, useFormik } from "formik";
+import * as Yup from "yup";
 
 export default function Register() {
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredFirstName, setEnteredFirstName] = useState("");
-  const [enteredLastName, setEnteredLastName] = useState("");
-  const [enteredPassword, setEnteredPassword] = useState("");
-  const [enteredConfirmPassword, setEnteredConfirmPassword] = useState("");
-
-  const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
-  const emailChangeHandler = (e) => {
-    setEnteredEmail(e.target.value);
-  };
-
-  const firstNameChangeHandler = (e) => {
-    setEnteredFirstName(e.target.value);
-  };
-
-  const lastNameChangeHandler = (e) => {
-    setEnteredLastName(e.target.value);
-  };
-
-  const passwordChangeHandler = (e) => {
-    setEnteredPassword(e.target.value);
-  };
-
-  const confirmedPasswordChangeHandler = (e) => {
-    setEnteredConfirmPassword(e.target.value);
-  };
-
-  const submitHandler = async (e) => {
-    try {
-      e.preventDefault();
-
-      if (enteredConfirmPassword !== enteredPassword) {
-        setError(true);
-        setErrorMessage(
-          "Password and Confirm Password dont match, Please try again."
-        );
-        setEnteredConfirmPassword("");
-        setEnteredPassword("");
-        return;
-      } else {
-        setError(false);
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      firstName: "",
+      lastName: "",
+      password: "",
+      confirmPassword: "",
+    },
+    onSubmit: async (values) => {
+      try {
         setErrorMessage("");
+
+        const req = {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          password: values.password,
+        };
+
+        console.log(req);
+      } catch (error) {
+        setErrorMessage(
+          "Error : Could not register , please enter all fields and try again."
+        );
       }
+    },
 
-      const req = {
-        firstName: enteredFirstName,
-        lastName: enteredLastName,
-        email: enteredEmail,
-        password: enteredPassword,
-      };
-
-      console.log(req);
-
-      setError(false);
-      setErrorMessage("");
-
-      setEnteredFirstName("");
-      setEnteredLastName("");
-      setEnteredEmail("");
-      setEnteredPassword("");
-      setEnteredConfirmPassword("");
-    } catch (error) {
-      setError(true);
-      setErrorMessage(
-        "Error : Could not register , please enter all field and try again."
-      );
-    }
-  };
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .required("Email is required")
+        .email("Invalid email address"),
+      firstName: Yup.string().required("First Name is required"),
+      lastName: Yup.string().required("Last Name is required"),
+      password: Yup.string()
+        .required("Password is required")
+        .min(8, "Password needs to be atleast 8 characters"),
+      confirmPassword: Yup.string()
+        .required("Confirm Password is required")
+        .oneOf(
+          [Yup.ref("password"), null],
+          "Confirm Password must match Password"
+        ),
+    }),
+  });
 
   return (
     <div className="Register flex items-center justify-center">
       <div className="w-96 p-6 rounded shadow-sm z-10 bg-white">
-        {error && <p className="text-red-500 font-bold">{errorMessage}</p>}
-        <form>
+        {errorMessage != "" && (
+          <p className="text-red-500 font-bold">{errorMessage}</p>
+        )}
+        <form onSubmit={formik.handleSubmit}>
           {/* Logo */}
           <div className="flex items-center justify-center mb-4">
             <img alt="logo" src={logo} className="h-32"></img>
@@ -91,64 +70,97 @@ export default function Register() {
           <input
             className="w-full py-2 bg-emerald-700 text-white px-1 outline-none mb-4"
             type="email"
+            name="email"
             placeholder="example@email.com"
-            onChange={emailChangeHandler}
-            value={enteredEmail}
+            onChange={formik.handleChange}
+            value={formik.values.email}
+            onBlur={formik.handleBlur}
           />
+          {/* Email Error */}
+          <div className="error text-red-500 font-bold">
+            {formik.errors.email && formik.touched.email && formik.errors.email}
+          </div>
 
           {/* First name*/}
           <label className="text-gray-700 font-bold">First Name</label>
           <input
             className="w-full py-2 bg-emerald-700 text-white px-1 outline-none mb-4"
             type="text"
+            name="firstName"
             placeholder="first name"
-            onChange={firstNameChangeHandler}
-            value={enteredFirstName}
+            onChange={formik.handleChange}
+            value={formik.values.firstName}
+            onBlur={formik.handleBlur}
           />
+          {/* First Name Error */}
+          <div className="error text-red-500 font-bold">
+            {formik.errors.firstName &&
+              formik.touched.firstName &&
+              formik.errors.firstName}
+          </div>
 
           {/* Last name*/}
           <label className="text-gray-700 font-bold">Last Name</label>
           <input
             className="w-full py-2 bg-emerald-700 text-white px-1 outline-none mb-4"
             type="text"
+            name="lastName"
             placeholder="last name"
-            onChange={lastNameChangeHandler}
-            value={enteredLastName}
+            onChange={formik.handleChange}
+            value={formik.values.lastName}
+            onBlur={formik.handleBlur}
           />
+          {/* Last Name Error */}
+          <div className="error text-red-500 font-bold">
+            {formik.errors.lastName &&
+              formik.touched.lastName &&
+              formik.errors.lastName}
+          </div>
 
           {/* Password */}
           <label className="text-gray-700 font-bold">Password</label>
           <input
             className="w-full py-2 bg-emerald-700 text-white px-1 outline-none mb-4"
             type="password"
+            name="password"
             placeholder="at least 8 characters"
-            onChange={passwordChangeHandler}
-            value={enteredPassword}
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            onBlur={formik.handleBlur}
           />
+          {/* Password Error */}
+          <div className="error text-red-500 font-bold">
+            {formik.errors.password &&
+              formik.touched.password &&
+              formik.errors.password}
+          </div>
 
           {/* Confirm Password */}
           <label className="text-gray-700 font-bold">Confirm Password</label>
           <input
             className="w-full py-2 bg-emerald-700 text-white px-1 outline-none mb-4"
             type="password"
+            name="confirmPassword"
             placeholder="at least 8 characters"
-            onChange={confirmedPasswordChangeHandler}
-            value={enteredConfirmPassword}
+            onChange={formik.handleChange}
+            value={formik.values.confirmPassword}
+            onBlur={formik.handleBlur}
           />
+
+          {/* Password Error */}
+          <div className="error text-red-500 font-bold">
+            {formik.errors.confirmPassword &&
+              formik.touched.confirmPassword &&
+              formik.errors.confirmPassword}
+          </div>
 
           {/* Submit */}
           <button
             type="submit"
             className="font-bold mt-5 bg-green-600 w-full text-white rounded hover:bg-lime-500 hover:text-gray-800 py-2"
-            onClick={submitHandler}
           >
             Sign up
           </button>
-
-          {/* Forgot Password */}
-          {/* <div className="w-full pt-10 text-center text-green-600 font-bold hover:text-lime-500">
-          <a href="/">Forgot Password?</a>
-        </div> */}
 
           <hr className="w-64 h-0.5 mx-auto my-10 bg-gray-300 border-0 rounded md:my-10 "></hr>
 
