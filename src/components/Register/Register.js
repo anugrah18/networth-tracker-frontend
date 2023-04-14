@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import "./Register.css";
 import logo from "../../images/bull-green.png";
-import { API_DOMAIN_URL, API_LOGIN_URL } from "../../utility/backendAPILinks";
+import {
+  API_DOMAIN_URL,
+  API_REGISTER_USER_URL,
+} from "../../utility/backendAPILinks";
 import axios from "axios";
-import { FormikProvider, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 
 export default function Register() {
@@ -27,8 +30,27 @@ export default function Register() {
           password: values.password,
         };
 
-        console.log(req);
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+
+        const res = await axios.post(
+          `${API_DOMAIN_URL}/${API_REGISTER_USER_URL}`,
+          req,
+          config
+        );
+
+        if (res.status === 200) {
+          console.log(res.data.message);
+          return;
+        }
       } catch (error) {
+        if (error.response.status === 409) {
+          setErrorMessage(`Error : ${error.response.data.message}`);
+          return;
+        }
         setErrorMessage(
           "Error : Could not register , please enter all fields and try again."
         );
