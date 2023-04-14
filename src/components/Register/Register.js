@@ -78,7 +78,7 @@ export default function Register() {
   return (
     <div className="Register flex items-center justify-center">
       <div className="w-96 p-6 rounded shadow-sm z-10 bg-white">
-        {errorMessage != "" && (
+        {errorMessage !== "" && (
           <p className="text-red-500 font-bold">{errorMessage}</p>
         )}
         <form onSubmit={formik.handleSubmit}>
