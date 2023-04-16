@@ -161,7 +161,7 @@ export default function Login() {
         <p className="w-full mt-10 text-center">Dont have an account?</p>
         {/* Sign up */}
         <div className="w-full text-center text-green-600 font-bold hover:text-lime-500">
-          <a href="/">Sign up</a>
+          <a href="/register">Sign up</a>
         </div>
       </form>
     </div>
