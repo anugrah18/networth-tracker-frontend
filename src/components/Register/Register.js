@@ -8,6 +8,7 @@ import {
 import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { Link } from "react-router-dom";
 
 export default function Register() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -43,7 +44,7 @@ export default function Register() {
         );
 
         if (res.status === 200) {
-          console.log(res.data.message);
+          window.location.href = "/";
           return;
         }
       } catch (error) {
