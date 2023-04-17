@@ -1,37 +1,41 @@
 import React, { useState } from "react";
 import "./ForgotPassword.css";
-import axios from "axios";
+import logo from "../../images/bull-green.png";
+import { useParams } from "react-router";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import logo from "../../images/bull-green.png";
 import {
   API_DOMAIN_URL,
-  API_FORGOT_PASSWORD,
+  API_RESET_PASSWORD,
 } from "../../utility/backendAPILinks";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-export default function ForgotPassword() {
+export default function ResetPassword() {
   const [errorMessage, setErrorMessage] = useState("");
+
+  const token = useParams().token;
   const formik = useFormik({
     initialValues: {
-      email: "",
+      password: "",
+      confirmPassword: "",
     },
     onSubmit: async (values) => {
       try {
         setErrorMessage("");
         const req = {
-          email: values.email,
+          newPassword: values.password,
         };
-
         const config = {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         };
 
         const res = await axios.post(
-          `${API_DOMAIN_URL}/${API_FORGOT_PASSWORD}`,
+          `${API_DOMAIN_URL}/${API_RESET_PASSWORD}`,
           req,
           config
         );
@@ -40,26 +44,26 @@ export default function ForgotPassword() {
           console.log(res.data.message);
           return;
         }
+
         console.log(res.data.message);
       } catch (error) {
-        if (error.response.status === 404) {
-          setErrorMessage(`Error : ${error.response.data.message}`);
-          return;
-        }
-
-        console.log(error);
-
-        setErrorMessage(
-          "Error : Could not send email, please enter all fields and try again."
-        );
+        setErrorMessage(`Error : ${error.response.data.message}`);
+        return;
       }
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .required("Email is required")
-        .email("Invalid email address"),
+      password: Yup.string()
+        .required("Password is required")
+        .min(8, "Password needs to be atleast 8 characters"),
+      confirmPassword: Yup.string()
+        .required("Confirm Password is required")
+        .oneOf(
+          [Yup.ref("password"), null],
+          "Confirm Password must match Password"
+        ),
     }),
   });
+
   return (
     <div className="ForgotPassword flex items-center justify-center">
       <div className="w-96 p-6 rounded shadow-sm z-10 bg-white">
@@ -71,20 +75,43 @@ export default function ForgotPassword() {
           <div className="flex items-center justify-center mb-4">
             <img alt="logo" src={logo} className="h-24"></img>
           </div>
-          {/* Email */}
-          <label className="text-gray-700 font-bold">Email</label>
+          {/* Password */}
+          <label className="text-gray-700 font-bold">New Password</label>
           <input
             className="w-full py-2 bg-emerald-700 text-white px-1 outline-none mb-4"
-            type="email"
-            name="email"
-            placeholder="Enter your email"
+            type="password"
+            name="password"
+            placeholder="at least 8 characters"
             onChange={formik.handleChange}
-            value={formik.values.email}
+            value={formik.values.password}
             onBlur={formik.handleBlur}
           />
-          {/* Email Error */}
+          {/* Password Error */}
           <div className="error text-red-500 font-bold">
-            {formik.errors.email && formik.touched.email && formik.errors.email}
+            {formik.errors.password &&
+              formik.touched.password &&
+              formik.errors.password}
+          </div>
+
+          {/* Confirm Password */}
+          <label className="text-gray-700 font-bold">
+            Confirm New Password
+          </label>
+          <input
+            className="w-full py-2 bg-emerald-700 text-white px-1 outline-none mb-4"
+            type="password"
+            name="confirmPassword"
+            placeholder="at least 8 characters"
+            onChange={formik.handleChange}
+            value={formik.values.confirmPassword}
+            onBlur={formik.handleBlur}
+          />
+
+          {/* Password Error */}
+          <div className="error text-red-500 font-bold">
+            {formik.errors.confirmPassword &&
+              formik.touched.confirmPassword &&
+              formik.errors.confirmPassword}
           </div>
 
           {/* Submit */}

@@ -8,6 +8,7 @@ const API_REGISTER_USER_URL = "api/users";
 const API_GET_A_USER = "api/users";
 const API_GET_A_USER_ID = "api/users/user/id";
 const API_FORGOT_PASSWORD = "api/users/password/forgot";
+const API_RESET_PASSWORD = "api/users/password/reset";
 
 export {
   API_DOMAIN_URL,
@@ -16,4 +17,5 @@ export {
   API_GET_A_USER,
   API_GET_A_USER_ID,
   API_FORGOT_PASSWORD,
+  API_RESET_PASSWORD,
 };

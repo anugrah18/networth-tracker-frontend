@@ -11,6 +11,7 @@ import {
 import { getAccessTokenFromBrowser } from "./utility/helpers";
 import { Route, Routes } from "react-router-dom";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
+import ResetPassword from "./components/ForgotPassword/ResetPassword";
 
 function App() {
   const [userState, setUserState] = useState({});
@@ -69,7 +70,11 @@ function App() {
           }
         ></Route>
         <Route path="/register" element={<Register />}></Route>
-        <Route path="/forgot-password" element={<ForgotPassword/>}></Route>
+        <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+        <Route
+          path="/forgot-password/:token"
+          element={<ResetPassword />}
+        ></Route>
       </Routes>
     </div>
   );
