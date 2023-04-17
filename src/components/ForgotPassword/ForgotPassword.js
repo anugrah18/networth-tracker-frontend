@@ -10,9 +10,12 @@ import {
 } from "../../utility/backendAPILinks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import SingleActionModal from "../Modals/SingleActionModal";
 
 export default function ForgotPassword() {
   const [errorMessage, setErrorMessage] = useState("");
+  const [modalDisplay, setModalDisplay] = useState(false);
+  const [modelData, setModelaData] = useState({});
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -37,7 +40,13 @@ export default function ForgotPassword() {
         );
 
         if (res.status === 200) {
-          console.log(res.data.message);
+          setModelaData({
+            heading: "Email Sent",
+            subHeading: `Sent password reset link to : ${req.email}  , please check your email`,
+            buttonText: "Back",
+            buttonLink: "/",
+          });
+          setModalDisplay(true);
           return;
         }
         console.log(res.data.message);
@@ -108,6 +117,7 @@ export default function ForgotPassword() {
           </div>
         </form>
       </div>
+      {modalDisplay && <SingleActionModal content={modelData} />}
     </div>
   );
 }

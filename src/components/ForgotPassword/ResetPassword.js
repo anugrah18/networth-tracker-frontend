@@ -11,9 +11,12 @@ import {
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import SingleActionModal from "../Modals/SingleActionModal";
 
 export default function ResetPassword() {
   const [errorMessage, setErrorMessage] = useState("");
+  const [modalDisplay, setModalDisplay] = useState(false);
+  const [modelData, setModelaData] = useState({});
 
   const token = useParams().token;
   const formik = useFormik({
@@ -41,7 +44,13 @@ export default function ResetPassword() {
         );
 
         if (res.status === 200) {
-          console.log(res.data.message);
+          setModelaData({
+            heading: "Password updated",
+            subHeading: `${res.data.message}`,
+            buttonText: "Login with new password",
+            buttonLink: "/",
+          });
+          setModalDisplay(true);
           return;
         }
 
@@ -135,6 +144,7 @@ export default function ResetPassword() {
           </div>
         </form>
       </div>
+      {modalDisplay && <SingleActionModal content={modelData} />}
     </div>
   );
 }
