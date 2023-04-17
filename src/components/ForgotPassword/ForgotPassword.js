@@ -8,6 +8,8 @@ import {
   API_DOMAIN_URL,
   API_FORGOT_PASSWORD,
 } from "../../utility/backendAPILinks";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 export default function ForgotPassword() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -94,7 +96,14 @@ export default function ForgotPassword() {
 
           {/* Login */}
           <div className="py-3 w-full text-center text-green-600 font-bold hover:text-lime-500">
-            <a href="/">Back to login </a>
+            <a href="/">
+              {" "}
+              <FontAwesomeIcon
+                icon={faArrowLeft}
+                className="pr-2"
+              ></FontAwesomeIcon>
+              Back to login{" "}
+            </a>
           </div>
         </form>
       </div>
