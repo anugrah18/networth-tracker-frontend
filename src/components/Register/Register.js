@@ -9,9 +9,12 @@ import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
+import SingleActionModal from "../Modals/SingleActionModal";
 
 export default function Register() {
   const [errorMessage, setErrorMessage] = useState("");
+  const [modalDisplay, setModalDisplay] = useState(false);
+  const [modelData, setModelaData] = useState({});
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -44,7 +47,14 @@ export default function Register() {
         );
 
         if (res.status === 200) {
-          window.location.href = "/";
+          setModelaData({
+            heading: "Successfully Registered",
+            subHeading: `Successfully registered user profile with email : ${req.email}`,
+            buttonText: "Back to login",
+            buttonLink: "/",
+          });
+          setModalDisplay(true);
+
           return;
         }
       } catch (error) {
@@ -194,6 +204,7 @@ export default function Register() {
           </div>
         </form>
       </div>
+      {modalDisplay && <SingleActionModal content={modelData} />}
     </div>
   );
 }
