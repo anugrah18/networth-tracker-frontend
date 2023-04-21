@@ -25,14 +25,14 @@ export default function Navbar() {
   return (
     <div className="shadow-lg w-full fixed top-0 left-0 z-20">
       <div className="md:flex items-center justify-between bg-emerald-600 py-2 text-white md:px-10 px-7">
-        <div
-          className="font-bold text-2xl cursor-pointer flex items-center"
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          <span className="text-3xl mr-1">
-            <FontAwesomeIcon icon={faDollarSign} />
+        <div className="font-bold text-2xl  flex items-center">
+          <span className="text-3xl mr-1 cursor-pointer">
+            <FontAwesomeIcon
+              icon={faDollarSign}
+              onClick={() => {
+                navigate("/");
+              }}
+            />
           </span>
           My Financial Pal
         </div>
