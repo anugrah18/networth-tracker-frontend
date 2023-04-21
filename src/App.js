@@ -12,6 +12,7 @@ import { getAccessTokenFromBrowser } from "./utility/helpers";
 import { Route, Routes } from "react-router-dom";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import ResetPassword from "./components/ForgotPassword/ResetPassword";
+import Navbar from "./components/Navbar/Navbar";
 
 function App() {
   const [userState, setUserState] = useState({});
@@ -59,6 +60,8 @@ function App() {
   }, []);
 
   return (
+    <>
+   <Navbar></Navbar>
     <div className="App">
       <Routes>
         <Route
@@ -76,7 +79,9 @@ function App() {
           element={<ResetPassword />}
         ></Route>
       </Routes>
+      
     </div>
+    </>
   );
 }
 
