@@ -5,6 +5,7 @@ import {
   faBars,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { Navigate, useNavigate } from "react-router";
 
 export default function Navbar() {
   const Links = [
@@ -20,10 +21,16 @@ export default function Navbar() {
     },
   ];
   const [openMenu, setOpenMenu] = useState(false);
+  const navigate = useNavigate();
   return (
     <div className="shadow-lg w-full fixed top-0 left-0 z-20">
       <div className="md:flex items-center justify-between bg-emerald-600 py-2 text-white md:px-10 px-7">
-        <div className="font-bold text-2xl cursor-pointer flex items-center">
+        <div
+          className="font-bold text-2xl cursor-pointer flex items-center"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
           <span className="text-3xl mr-1">
             <FontAwesomeIcon icon={faDollarSign} />
           </span>
