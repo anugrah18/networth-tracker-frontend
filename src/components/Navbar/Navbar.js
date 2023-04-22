@@ -11,12 +11,11 @@ export default function Navbar(props) {
   const { User } = props;
   let Links = [];
   if (User?.user?.isAdmin) {
-    console.log("user is Admin");
     Links = [
       {
         id: 1,
         name: "Portfolio",
-        link: "/",
+        link: "/portfolio",
       },
       {
         id: 2,
@@ -50,12 +49,11 @@ export default function Navbar(props) {
       },
     ];
   } else if (User?.user?.isAdmin === false) {
-    console.log("user is regular");
     Links = [
       {
         id: 1,
         name: "Portfolio",
-        link: "/",
+        link: "/portfolio",
       },
       {
         id: 2,
@@ -79,7 +77,6 @@ export default function Navbar(props) {
       },
     ];
   } else {
-    console.log("User is not logged in");
     Links = [
       {
         id: 1,

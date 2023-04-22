@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Login.css";
 import logo from "../../../images/bull-green.png";
 import {
@@ -9,6 +9,7 @@ import axios from "axios";
 import { UserContext } from "../../../contexts/UserContext";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router";
 
 export default function Login() {
   const formik = useFormik({
@@ -75,7 +76,13 @@ export default function Login() {
   const [isLoginPersistent, setIsLoginPersistent] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { setUserState } = useContext(UserContext);
+  const { userState, setUserState } = useContext(UserContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (userState?.user != null) {
+      navigate("/portfolio");
+    }
+  }, [userState]);
 
   const persistentLoginHandler = (e) => {
     setIsLoginPersistent(!isLoginPersistent);

@@ -13,6 +13,7 @@ import { Route, Routes } from "react-router-dom";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import ResetPassword from "./components/ForgotPassword/ResetPassword";
 import Navbar from "./components/Navbar/Navbar";
+import Porfolio from "./components/Homepage/Portfolio/Porfolio";
 
 function App() {
   const [userState, setUserState] = useState({});
@@ -69,6 +70,14 @@ function App() {
             element={
               <UserContext.Provider value={{ userState, setUserState }}>
                 <Homepage />
+              </UserContext.Provider>
+            }
+          ></Route>
+          <Route
+            path="/portfolio"
+            element={
+              <UserContext.Provider value={{ userState, setUserState }}>
+                <Porfolio />
               </UserContext.Provider>
             }
           ></Route>
