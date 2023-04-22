@@ -5,7 +5,7 @@ import {
   faBars,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router";
+import { useNavigate, Navigate } from "react-router";
 
 export default function Navbar(props) {
   const { User } = props;
@@ -101,7 +101,7 @@ export default function Navbar(props) {
             <FontAwesomeIcon
               icon={faDollarSign}
               onClick={() => {
-                navigate("/");
+                navigate("/portfolio");
               }}
             />
           </span>

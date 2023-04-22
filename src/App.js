@@ -14,6 +14,9 @@ import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import ResetPassword from "./components/ForgotPassword/ResetPassword";
 import Navbar from "./components/Navbar/Navbar";
 import Porfolio from "./components/Homepage/Portfolio/Porfolio";
+import PrivateRoute from "./components/Routes/Private/PrivateRoute";
+import Logout from "./components/Logout/Logout";
+import Users from "./components/Users/Users";
 
 function App() {
   const [userState, setUserState] = useState({});
@@ -77,7 +80,7 @@ function App() {
             path="/portfolio"
             element={
               <UserContext.Provider value={{ userState, setUserState }}>
-                <Porfolio />
+                <PrivateRoute component={Porfolio} />
               </UserContext.Provider>
             }
           ></Route>
@@ -87,6 +90,8 @@ function App() {
             path="/forgot-password/:token"
             element={<ResetPassword />}
           ></Route>
+          <Route path="/logout" element={<Logout />}></Route>
+          <Route path="/users" element={<Users User={userState} />}></Route>
         </Routes>
       </div>
     </>
