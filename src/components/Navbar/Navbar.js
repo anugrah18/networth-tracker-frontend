@@ -5,21 +5,95 @@ import {
   faBars,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
-export default function Navbar() {
-  const Links = [
-    {
-      id: 1,
-      name: "Login",
-      link: "/",
-    },
-    {
-      id: 2,
-      name: "Register",
-      link: "/register",
-    },
-  ];
+export default function Navbar(props) {
+  const { User } = props;
+  let Links = [];
+  if (User?.user?.isAdmin) {
+    console.log("user is Admin");
+    Links = [
+      {
+        id: 1,
+        name: "Portfolio",
+        link: "/",
+      },
+      {
+        id: 2,
+        name: "Wealth Chart",
+        link: "/wealth-chart",
+      },
+      {
+        id: 3,
+        name: "Records",
+        link: "/records",
+      },
+      {
+        id: 4,
+        name: "Categories",
+        link: "/records",
+      },
+      {
+        id: 5,
+        name: "Users",
+        link: "/users",
+      },
+      {
+        id: 6,
+        name: "Change Password",
+        link: "/change-password",
+      },
+      {
+        id: 7,
+        name: "Logout",
+        link: "/logout",
+      },
+    ];
+  } else if (User?.user?.isAdmin === false) {
+    console.log("user is regular");
+    Links = [
+      {
+        id: 1,
+        name: "Portfolio",
+        link: "/",
+      },
+      {
+        id: 2,
+        name: "Wealth Chart",
+        link: "/wealth-chart",
+      },
+      {
+        id: 3,
+        name: "Records",
+        link: "/records",
+      },
+      {
+        id: 4,
+        name: "Change Password",
+        link: "/change-password",
+      },
+      {
+        id: 5,
+        name: "Logout",
+        link: "/logout",
+      },
+    ];
+  } else {
+    console.log("User is not logged in");
+    Links = [
+      {
+        id: 1,
+        name: "Login",
+        link: "/",
+      },
+      {
+        id: 2,
+        name: "Register",
+        link: "/register",
+      },
+    ];
+  }
+
   const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
   return (

@@ -61,26 +61,25 @@ function App() {
 
   return (
     <>
-   <Navbar></Navbar>
-    <div className="App">
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <UserContext.Provider value={{ userState, setUserState }}>
-              <Homepage />
-            </UserContext.Provider>
-          }
-        ></Route>
-        <Route path="/register" element={<Register />}></Route>
-        <Route path="/forgot-password" element={<ForgotPassword />}></Route>
-        <Route
-          path="/forgot-password/:token"
-          element={<ResetPassword />}
-        ></Route>
-      </Routes>
-      
-    </div>
+      <Navbar User={userState}></Navbar>
+      <div className="App">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <UserContext.Provider value={{ userState, setUserState }}>
+                <Homepage />
+              </UserContext.Provider>
+            }
+          ></Route>
+          <Route path="/register" element={<Register />}></Route>
+          <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+          <Route
+            path="/forgot-password/:token"
+            element={<ResetPassword />}
+          ></Route>
+        </Routes>
+      </div>
     </>
   );
 }
