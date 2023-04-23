@@ -20,47 +20,54 @@ import Users from "./components/Users/Users";
 
 function App() {
   const [userState, setUserState] = useState({});
+  const [accessToken, setAccessToken] = useState(getAccessTokenFromBrowser());
+
+  const updateUserState = async (access_token) => {
+    if (access_token !== null) {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      };
+
+      //http calls for persistent login
+      try {
+        const { data: userData } = await axios.get(
+          `${API_DOMAIN_URL}/${API_GET_A_USER_ID}`,
+          config
+        );
+
+        if (userData?.data !== null) {
+          const user = {
+            userId: userData.userId,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            email: userData.email,
+            isAdmin: userData.isAdmin,
+          };
+
+          setUserState((prev) => ({ ...prev, user }));
+        }
+      } catch (error) {
+        return;
+      }
+    }
+  };
+
+  // const userStateVal = useMemo(() => {}, []);
+
+  const detectLoginStatus = async () => {
+    updateUserState(accessToken);
+  };
 
   useEffect(() => {
-    const detectLoginStatus = async () => {
-      const access_token = getAccessTokenFromBrowser();
-
-      if (access_token !== null) {
-        const config = {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
-        };
-
-        //http calls for persistent login
-        try {
-          const { data: userData } = await axios.get(
-            `${API_DOMAIN_URL}/${API_GET_A_USER_ID}`,
-            config
-          );
-
-          if (userData?.data !== null) {
-            const user = {
-              userId: userData.userId,
-              firstName: userData.firstName,
-              lastName: userData.lastName,
-              email: userData.email,
-              isAdmin: userData.isAdmin,
-            };
-
-            setUserState((prev) => ({ ...prev, user }));
-          }
-        } catch (error) {
-          return;
-        }
-      }
-    };
     detectLoginStatus();
   }, []);
 
   return (
     <>
       <Navbar User={userState}></Navbar>
+
       <div className="App">
         <Routes>
           <Route
