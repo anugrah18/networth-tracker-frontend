@@ -20,7 +20,6 @@ import Users from "./components/Users/Users";
 
 function App() {
   const [userState, setUserState] = useState({});
-  const [accessToken, setAccessToken] = useState(getAccessTokenFromBrowser());
 
   const updateUserState = async (access_token) => {
     if (access_token !== null) {
@@ -57,7 +56,8 @@ function App() {
   // const userStateVal = useMemo(() => {}, []);
 
   const detectLoginStatus = async () => {
-    updateUserState(accessToken);
+    const access_token = getAccessTokenFromBrowser();
+    updateUserState(access_token);
   };
 
   useEffect(() => {
