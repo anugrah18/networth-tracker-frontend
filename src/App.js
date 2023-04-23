@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { UserContext } from "./contexts/UserContext";
 import Homepage from "./components/Homepage/Homepage";
 import Register from "./components/Register/Register";
@@ -34,26 +34,21 @@ function App() {
 
         //http calls for persistent login
         try {
-          const { data } = await axios.get(
+          const { data: userData } = await axios.get(
             `${API_DOMAIN_URL}/${API_GET_A_USER_ID}`,
             config
           );
-          const userId = data?.userId;
 
-          const userData = await axios.get(
-            `${API_DOMAIN_URL}/${API_GET_A_USER}/${userId}`,
-            config
-          );
           if (userData?.data !== null) {
             const user = {
-              userId: userData.data.userId,
-              firstName: userData.data.firstName,
-              lastName: userData.data.lastName,
-              email: userData.data.email,
-              isAdmin: userData.data.isAdmin,
+              userId: userData.userId,
+              firstName: userData.firstName,
+              lastName: userData.lastName,
+              email: userData.email,
+              isAdmin: userData.isAdmin,
             };
 
-            setUserState({ user });
+            setUserState((prev) => ({ ...prev, user }));
           }
         } catch (error) {
           return;
