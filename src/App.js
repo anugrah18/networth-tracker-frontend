@@ -9,7 +9,7 @@ import {
   API_GET_A_USER_ID,
 } from "./utility/backendAPILinks";
 import { getAccessTokenFromBrowser } from "./utility/helpers";
-import { Route, Routes , BrowserRouter } from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import ResetPassword from "./components/ForgotPassword/ResetPassword";
 import Navbar from "./components/Navbar/Navbar";
@@ -66,38 +66,38 @@ function App() {
 
   return (
     <>
-    <BrowserRouter>
-      <Navbar User={userState}></Navbar>
+      <BrowserRouter>
+        <Navbar User={userState}></Navbar>
 
-      <div className="App">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <UserContext.Provider value={{ userState, setUserState }}>
-                <Homepage />
-              </UserContext.Provider>
-            }
-          ></Route>
-          <Route
-            path="/portfolio"
-            element={
-              <UserContext.Provider value={{ userState, setUserState }}>
-                <PrivateRoute component={Porfolio} />
-              </UserContext.Provider>
-            }
-          ></Route>
-          <Route path="/register" element={<Register />}></Route>
-          <Route path="/forgot-password" element={<ForgotPassword />}></Route>
-          <Route
-            path="/forgot-password/:token"
-            element={<ResetPassword />}
-          ></Route>
-          <Route path="/logout" element={<Logout />}></Route>
-          <Route path="/users" element={<Users User={userState} />}></Route>
-        </Routes>
-      </div>
-    </BrowserRouter>
+        <div className="App">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <UserContext.Provider value={{ userState, setUserState }}>
+                  <Homepage />
+                </UserContext.Provider>
+              }
+            ></Route>
+            <Route
+              path="/portfolio"
+              element={
+                <UserContext.Provider value={{ userState, setUserState }}>
+                  <PrivateRoute component={Porfolio} />
+                </UserContext.Provider>
+              }
+            ></Route>
+            <Route path="/register" element={<Register />}></Route>
+            <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+            <Route
+              path="/forgot-password/:token"
+              element={<ResetPassword />}
+            ></Route>
+            <Route path="/logout" element={<Logout />}></Route>
+            <Route path="/users" element={<Users User={userState} />}></Route>
+          </Routes>
+        </div>
+      </BrowserRouter>
     </>
   );
 }
