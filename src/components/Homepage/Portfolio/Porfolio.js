@@ -11,6 +11,7 @@ import {
   API_GET_ALL_RECORDS,
 } from "../../../utility/backendAPILinks";
 import PortfolioInfoCard from "./PortfolioInfoCard/PortfolioInfoCard";
+import EmptyBox from "../../../images/EmptyBox.png";
 
 export default function Porfolio() {
   const { userState } = useContext(UserContext);
@@ -92,7 +93,9 @@ export default function Porfolio() {
           : "You don't have any records currently."}{" "}
       </p>
       {recordData.length == 0 ? (
-        <div />
+        <div className="h-60 w-60 md:mb-52 mb-5">
+          <img src={EmptyBox}></img>
+        </div>
       ) : (
         <div className="flex flex-wrap justify-center md:mb-10">
           <PortfolioInfoCard heading="Total Net Worth" value={networthValue} />
