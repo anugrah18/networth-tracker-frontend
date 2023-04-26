@@ -13,6 +13,13 @@ import {
 import PortfolioInfoCard from "./PortfolioInfoCard/PortfolioInfoCard";
 import EmptyBox from "../../../images/EmptyBox.png";
 
+import {
+  faHouse,
+  faBuildingColumns,
+  faSackDollar,
+  faThumbsDown,
+} from "@fortawesome/free-solid-svg-icons";
+
 export default function Porfolio() {
   const { userState } = useContext(UserContext);
   const { recordState, setRecordState } = useContext(RecordContext);
@@ -98,15 +105,29 @@ export default function Porfolio() {
         </div>
       ) : (
         <div className="flex flex-wrap justify-center md:mb-10">
-          <PortfolioInfoCard heading="Total Net Worth" value={networthValue} />
+          <PortfolioInfoCard
+            heading="Total Net Worth"
+            value={networthValue}
+            icon={faBuildingColumns}
+            type={"positive"}
+          />
           <PortfolioInfoCard
             heading="Investable Assets"
             value={latestRecord?.asset}
+            icon={faHouse}
+            type={"positive"}
           />
-          <PortfolioInfoCard heading="Total Cash" value={latestRecord?.cash} />
+          <PortfolioInfoCard
+            heading="Total Cash"
+            value={latestRecord?.cash}
+            icon={faSackDollar}
+            type={"positive"}
+          />
           <PortfolioInfoCard
             heading="Liabilities"
             value={latestRecord?.liability}
+            icon={faThumbsDown}
+            type={"negative"}
           />
         </div>
       )}
