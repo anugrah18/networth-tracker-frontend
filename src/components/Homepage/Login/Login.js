@@ -89,13 +89,13 @@ export default function Login() {
   };
 
   return (
-    <div className="w-96 p-6 rounded shadow-sm z-10 bg-white">
+    <div className="w-96 md:mt-10 mt-20 p-6 rounded shadow-sm z-10 bg-white">
       {errorMessage !== "" && (
         <p className="text-red-500 font-bold">{errorMessage}</p>
       )}
       <form onSubmit={formik.handleSubmit}>
         {/* Logo */}
-        <div className="flex items-center justify-center mb-4">
+        <div className="flex items-center justify-center md:mb-4">
           <img alt="logo" src={logo} className="h-32"></img>
         </div>
 
@@ -163,7 +163,7 @@ export default function Login() {
           <a href="/forgot-password">Forgot Password?</a>
         </div>
 
-        <hr className="w-64 h-0.5 mx-auto my-10 bg-gray-300 border-0 rounded md:my-10 "></hr>
+        <hr className="w-64 h-0.5 mx-auto my-1 bg-gray-300 border-0 rounded md:my-10 "></hr>
 
         <p className="w-full mt-10 text-center">Dont have an account?</p>
         {/* Sign up */}

@@ -8,7 +8,7 @@ export default function Homepage() {
   const { userState } = useContext(UserContext);
   const navigate = useNavigate();
   return (
-    <div className="Homepage flex items-center justify-center h-screen">
+    <div className="Homepage flex items-center justify-center h-full">
       {userState?.user == null ? <Login></Login> : navigate("/portfolio")}
     </div>
   );

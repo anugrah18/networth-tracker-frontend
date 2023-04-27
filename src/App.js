@@ -3,11 +3,7 @@ import { UserContext } from "./contexts/UserContext";
 import Homepage from "./components/Homepage/Homepage";
 import Register from "./components/Register/Register";
 import axios from "axios";
-import {
-  API_DOMAIN_URL,
-  API_GET_A_USER,
-  API_GET_A_USER_ID,
-} from "./utility/backendAPILinks";
+import { API_DOMAIN_URL, API_GET_A_USER_ID } from "./utility/backendAPILinks";
 import { getAccessTokenFromBrowser } from "./utility/helpers";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
@@ -17,9 +13,11 @@ import Porfolio from "./components/Homepage/Portfolio/Porfolio";
 import PrivateRoute from "./components/Routes/Private/PrivateRoute";
 import Logout from "./components/Logout/Logout";
 import Users from "./components/Users/Users";
+import { RecordContext } from "./contexts/RecordContext";
 
 function App() {
   const [userState, setUserState] = useState({});
+  const [recordState, setRecordState] = useState(null);
 
   const updateUserState = async (access_token) => {
     if (access_token !== null) {
@@ -43,6 +41,7 @@ function App() {
             lastName: userData.lastName,
             email: userData.email,
             isAdmin: userData.isAdmin,
+            access_token: access_token,
           };
 
           setUserState((prev) => ({ ...prev, user }));
@@ -52,8 +51,6 @@ function App() {
       }
     }
   };
-
-  // const userStateVal = useMemo(() => {}, []);
 
   const detectLoginStatus = async () => {
     const access_token = getAccessTokenFromBrowser();
@@ -83,7 +80,11 @@ function App() {
               path="/portfolio"
               element={
                 <UserContext.Provider value={{ userState, setUserState }}>
-                  <PrivateRoute component={Porfolio} />
+                  <RecordContext.Provider
+                    value={{ recordState, setRecordState }}
+                  >
+                    <PrivateRoute component={Porfolio} />
+                  </RecordContext.Provider>
                 </UserContext.Provider>
               }
             ></Route>
