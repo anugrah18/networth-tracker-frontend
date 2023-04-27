@@ -94,11 +94,34 @@ export default function Porfolio() {
         <span className="text-emerald-500">{userState?.user?.firstName} </span>
       </h1>
 
-      <p className="md:p-5 px-1 py-3 md:py-0 md:text-xl text-lg">
+      {/* <p className="md:p-5 px-5 py-3 md:py-0 md:text-xl text-lg">
         {recordData.length > 0
           ? "Here is your portfolio summary based on the records."
-          : "You don't have any records currently."}{" "}
-      </p>
+          : "You don't have any" +
+            (
+              <a className="text-emerald-500" href="/records">
+                records
+              </a>
+            ) +
+            "currently."}{" "}
+      </p> */}
+
+      {recordData.length > 0 && (
+        <p className="md:p-5 px-5 py-3 md:py-0 md:text-xl text-lg">
+          Here is your portfolio summary based on the records.
+        </p>
+      )}
+
+      {recordData.length === 0 && (
+        <p className="md:p-5 px-5 py-3 md:py-0 md:text-xl text-lg">
+          You don't have any{" "}
+          <span className="text-emerald-500 hover:text-green-400">
+            <a href="/records">records</a>
+          </span>{" "}
+          currently.
+        </p>
+      )}
+
       {recordData.length == 0 ? (
         <div className="h-60 w-60 md:mb-52 mb-5">
           <img src={EmptyBox}></img>
