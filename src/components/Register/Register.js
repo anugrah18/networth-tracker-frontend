@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Register.css";
 import logo from "../../images/bull-green.png";
 import {
@@ -10,11 +10,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
 import SingleActionModal from "../Modals/SingleActionModal";
+import LoadingSpinner from "../Loading/LoadingSpinner";
 
 export default function Register() {
   const [errorMessage, setErrorMessage] = useState("");
   const [modalDisplay, setModalDisplay] = useState(false);
   const [modelData, setModelaData] = useState({});
+  const [loading, setLoading] = useState(true);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -40,11 +42,13 @@ export default function Register() {
           },
         };
 
+        setLoading(true);
         const res = await axios.post(
           `${API_DOMAIN_URL}/${API_REGISTER_USER_URL}`,
           req,
           config
         );
+        setLoading(false);
 
         if (res.status === 200) {
           setModelaData({
@@ -86,7 +90,15 @@ export default function Register() {
     }),
   });
 
-  return (
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
+  return loading ? (
+    <div className="grid h-screen place-items-center">
+      <LoadingSpinner />
+    </div>
+  ) : (
     <div className="Register flex items-center justify-center mt-10">
       <div className="w-96 p-6 rounded shadow-sm z-10 bg-white">
         {errorMessage !== "" && (
