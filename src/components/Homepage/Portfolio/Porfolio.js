@@ -19,11 +19,13 @@ import {
   faSackDollar,
   faThumbsDown,
 } from "@fortawesome/free-solid-svg-icons";
+import LoadingSpinner from "../../Loading/LoadingSpinner";
 
 export default function Porfolio() {
   const { userState } = useContext(UserContext);
   const { recordState, setRecordState } = useContext(RecordContext);
   const [recordLocalClean, setRecordLocalClean] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const recordData = [];
 
@@ -64,6 +66,7 @@ export default function Porfolio() {
 
     const access_token = getAccessTokenFromBrowser();
     updateRecordState(access_token);
+    setLoading(false);
   }, []);
 
   //create array of objects for rendering.
@@ -89,12 +92,18 @@ export default function Porfolio() {
 
   return (
     <div className="mt-10 Portfolio grid h-screen w-screen place-items-center">
-      <h1 className="lg:text-3xl text-2xl mt-10">
-        Welcome back,{" "}
-        <span className="text-emerald-500">{userState?.user?.firstName} </span>
-      </h1>
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <h1 className="lg:text-3xl text-2xl mt-10">
+            Welcome back,{" "}
+            <span className="text-emerald-500">
+              {userState?.user?.firstName}{" "}
+            </span>
+          </h1>
 
-      {/* <p className="md:p-5 px-5 py-3 md:py-0 md:text-xl text-lg">
+          {/* <p className="md:p-5 px-5 py-3 md:py-0 md:text-xl text-lg">
         {recordData.length > 0
           ? "Here is your portfolio summary based on the records."
           : "You don't have any" +
@@ -106,53 +115,55 @@ export default function Porfolio() {
             "currently."}{" "}
       </p> */}
 
-      {recordData.length > 0 && (
-        <p className="md:p-5 px-5 py-3 md:py-0 md:text-xl text-lg">
-          Here is your portfolio summary based on the records.
-        </p>
-      )}
+          {recordData.length > 0 && (
+            <p className="md:p-5 px-5 py-3 md:py-0 md:text-xl text-lg">
+              Here is your portfolio summary based on the records.
+            </p>
+          )}
 
-      {recordData.length === 0 && (
-        <p className="md:p-5 px-5 py-3 md:py-0 md:text-xl text-lg">
-          You don't have any{" "}
-          <span className="text-emerald-500 hover:text-green-400">
-            <a href="/records">records</a>
-          </span>{" "}
-          currently.
-        </p>
-      )}
+          {recordData.length === 0 && (
+            <p className="md:p-5 px-5 py-3 md:py-0 md:text-xl text-lg">
+              You don't have any{" "}
+              <span className="text-emerald-500 hover:text-green-400">
+                <a href="/records">records</a>
+              </span>{" "}
+              currently.
+            </p>
+          )}
 
-      {recordData.length == 0 ? (
-        <div className="h-60 w-60 md:mb-52 mb-5">
-          <img src={EmptyBox}></img>
-        </div>
-      ) : (
-        <div className="flex flex-wrap justify-center md:mb-10">
-          <PortfolioInfoCard
-            heading="Total Net Worth"
-            value={networthValue}
-            icon={faBuildingColumns}
-            type={"positive"}
-          />
-          <PortfolioInfoCard
-            heading="Investable Assets"
-            value={latestRecord?.asset}
-            icon={faHouse}
-            type={"positive"}
-          />
-          <PortfolioInfoCard
-            heading="Total Cash"
-            value={latestRecord?.cash}
-            icon={faSackDollar}
-            type={"positive"}
-          />
-          <PortfolioInfoCard
-            heading="Liabilities"
-            value={latestRecord?.liability}
-            icon={faThumbsDown}
-            type={"negative"}
-          />
-        </div>
+          {recordData.length == 0 ? (
+            <div className="h-60 w-60 md:mb-52 mb-5">
+              <img src={EmptyBox}></img>
+            </div>
+          ) : (
+            <div className="flex flex-wrap justify-center md:mb-10">
+              <PortfolioInfoCard
+                heading="Total Net Worth"
+                value={networthValue}
+                icon={faBuildingColumns}
+                type={"positive"}
+              />
+              <PortfolioInfoCard
+                heading="Investable Assets"
+                value={latestRecord?.asset}
+                icon={faHouse}
+                type={"positive"}
+              />
+              <PortfolioInfoCard
+                heading="Total Cash"
+                value={latestRecord?.cash}
+                icon={faSackDollar}
+                type={"positive"}
+              />
+              <PortfolioInfoCard
+                heading="Liabilities"
+                value={latestRecord?.liability}
+                icon={faThumbsDown}
+                type={"negative"}
+              />
+            </div>
+          )}
+        </>
       )}
     </div>
   );

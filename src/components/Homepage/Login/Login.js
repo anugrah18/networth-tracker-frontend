@@ -10,6 +10,7 @@ import { UserContext } from "../../../contexts/UserContext";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router";
+import LoadingSpinner from "../../Loading/LoadingSpinner";
 
 export default function Login() {
   const formik = useFormik({
@@ -75,6 +76,7 @@ export default function Login() {
 
   const [isLoginPersistent, setIsLoginPersistent] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const { userState, setUserState } = useContext(UserContext);
   const navigate = useNavigate();
@@ -82,13 +84,16 @@ export default function Login() {
     if (userState?.user != null) {
       navigate("/portfolio");
     }
+    setLoading(false);
   }, [userState]);
 
   const persistentLoginHandler = (e) => {
     setIsLoginPersistent(!isLoginPersistent);
   };
 
-  return (
+  return loading ? (
+    <LoadingSpinner />
+  ) : (
     <div className="w-96 md:mt-10 mt-20 p-6 rounded shadow-sm z-10 bg-white">
       {errorMessage !== "" && (
         <p className="text-red-500 font-bold">{errorMessage}</p>
