@@ -10,12 +10,14 @@ import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import ResetPassword from "./components/ForgotPassword/ResetPassword";
 import Navbar from "./components/Navbar/Navbar";
 import Porfolio from "./components/Homepage/Portfolio/Porfolio";
-import PrivateRoute from "./components/Routes/Private/PrivateRoute";
+import HomeRoute from "./components/Routes/Private/HomeRoute";
 import Logout from "./components/Logout/Logout";
 import Users from "./components/Users/Users";
 import { RecordContext } from "./contexts/RecordContext";
 import NotAuthorized from "./components/NotAuthorized/NotAuthorized";
 import AdminRoute from "./components/Routes/Private/AdminRoute";
+import WealthChart from "./components/WealthChart/WealthChart";
+import PrivateRoute from "./components/Routes/Private/PrivateRoute";
 
 function App() {
   const [userState, setUserState] = useState({});
@@ -85,7 +87,19 @@ function App() {
                   <RecordContext.Provider
                     value={{ recordState, setRecordState }}
                   >
-                    <PrivateRoute component={Porfolio} />
+                    <HomeRoute component={Porfolio} />
+                  </RecordContext.Provider>
+                </UserContext.Provider>
+              }
+            ></Route>
+            <Route
+              path="/wealth-chart"
+              element={
+                <UserContext.Provider value={{ userState, setUserState }}>
+                  <RecordContext.Provider
+                    value={{ recordState, setRecordState }}
+                  >
+                    <PrivateRoute component={WealthChart} />
                   </RecordContext.Provider>
                 </UserContext.Provider>
               }
