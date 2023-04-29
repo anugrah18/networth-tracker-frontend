@@ -121,7 +121,7 @@ export default function Navbar(props) {
           {Links.map((link) => (
             <li
               key={link.id}
-              className="md:ml-8 md:text-xl text-lg md:my-0 my-7 md:mx-0 mx-5"
+              className="md:ml-8 md:text-sm lg:text-lg text-lg md:my-0 my-7 md:mx-0 mx-5"
             >
               <a
                 href={link.link}
