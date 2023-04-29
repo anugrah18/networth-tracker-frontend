@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { RecordContext } from "../../../contexts/RecordContext";
 import { UserContext } from "../../../contexts/UserContext";
@@ -51,7 +51,6 @@ export default function Porfolio() {
           const record_data_clean = recordsParser(recordsData);
 
           setRecordLocalClean(record_data_clean);
-          setRecordState(record_data_clean);
         }
       } catch (error) {
         return;

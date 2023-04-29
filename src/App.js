@@ -1,9 +1,13 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useContext } from "react";
 import { UserContext } from "./contexts/UserContext";
 import Homepage from "./components/Homepage/Homepage";
 import Register from "./components/Register/Register";
 import axios from "axios";
-import { API_DOMAIN_URL, API_GET_A_USER_ID } from "./utility/backendAPILinks";
+import {
+  API_DOMAIN_URL,
+  API_GET_ALL_RECORDS,
+  API_GET_A_USER_ID,
+} from "./utility/backendAPILinks";
 import { getAccessTokenFromBrowser } from "./utility/helpers";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
@@ -18,10 +22,11 @@ import NotAuthorized from "./components/NotAuthorized/NotAuthorized";
 import AdminRoute from "./components/Routes/Private/AdminRoute";
 import WealthChart from "./components/WealthChart/WealthChart";
 import PrivateRoute from "./components/Routes/Private/PrivateRoute";
+import { recordsParser } from "./utility/recordsUtils";
 
 function App() {
   const [userState, setUserState] = useState({});
-  const [recordState, setRecordState] = useState(null);
+  const [recordState, setRecordState] = useState([]);
 
   const updateUserState = async (access_token) => {
     if (access_token !== null) {
@@ -56,9 +61,38 @@ function App() {
     }
   };
 
+  const updateRecordState = async (access_token) => {
+    if (access_token !== null) {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      };
+
+      //http calls for getting records data
+      try {
+        const { data: recordsData } = await axios.get(
+          `${API_DOMAIN_URL}/${API_GET_ALL_RECORDS}`,
+          config
+        );
+
+        if (recordsData?.data !== null) {
+          //Parse records into clean structured format.
+          const record_data_clean = recordsParser(recordsData);
+
+          // setRecordState((prev) => ({ ...prev, record_data_clean }))
+          setRecordState(record_data_clean);
+        }
+      } catch (error) {
+        return;
+      }
+    }
+  };
+
   const detectLoginStatus = async () => {
     const access_token = getAccessTokenFromBrowser();
-    updateUserState(access_token);
+    updateUserState(access_token);    
+    updateRecordState(access_token);
   };
 
   useEffect(() => {
