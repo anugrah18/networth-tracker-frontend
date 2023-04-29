@@ -14,6 +14,8 @@ import PrivateRoute from "./components/Routes/Private/PrivateRoute";
 import Logout from "./components/Logout/Logout";
 import Users from "./components/Users/Users";
 import { RecordContext } from "./contexts/RecordContext";
+import NotAuthorized from "./components/NotAuthorized/NotAuthorized";
+import AdminRoute from "./components/Routes/Private/AdminRoute";
 
 function App() {
   const [userState, setUserState] = useState({});
@@ -95,7 +97,15 @@ function App() {
               element={<ResetPassword />}
             ></Route>
             <Route path="/logout" element={<Logout />}></Route>
-            <Route path="/users" element={<Users User={userState} />}></Route>
+
+            <Route
+              path="/users"
+              element={
+                <UserContext.Provider value={{ userState, setUserState }}>
+                  <AdminRoute component={Users} />
+                </UserContext.Provider>
+              }
+            ></Route>
           </Routes>
         </div>
       </BrowserRouter>
