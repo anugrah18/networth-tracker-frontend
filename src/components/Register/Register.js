@@ -62,6 +62,7 @@ export default function Register() {
           return;
         }
       } catch (error) {
+        setLoading(false);
         if (error.response.status === 409) {
           setErrorMessage(`Error : ${error.response.data.message}`);
           return;
