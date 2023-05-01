@@ -1,3 +1,5 @@
+import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 export default function WealthTable(props) {
@@ -26,13 +28,12 @@ export default function WealthTable(props) {
     });
   }
 
-  console.log(tableData);
   const tableDataReversed = tableData.reverse();
 
   return (
     <div className="m-auto p-5">
-      <table className="w-full text-sm text-left text-white ">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
+      <table className="w-full text-sm text-left text-white">
+        <thead className="text-xs text-gray-100 uppercase bg-emerald-500 ">
           <tr>
             <th scope="col" className="px-6 py-3">
               Month
@@ -111,6 +112,13 @@ export default function WealthTable(props) {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
+
+                <FontAwesomeIcon
+                  icon={
+                    row.netWorthChangePercent >= 0 ? faArrowUp : faArrowDown
+                  }
+                  className="ml-3"
+                />
               </td>
             </tr>
           ))}
