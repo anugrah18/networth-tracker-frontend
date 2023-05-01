@@ -54,7 +54,7 @@ export default function WealthTable(props) {
             <th scope="col" className="px-6 py-3">
               Net Worth Change ($)
             </th>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="md:px-6 px-10 py-3">
               Net Worth Change (%)
             </th>
           </tr>
