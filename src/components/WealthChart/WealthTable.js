@@ -32,6 +32,7 @@ export default function WealthTable(props) {
 
   return (
     <div className="m-auto p-5">
+      <h1 className="text-2xl mb-5 md:text-center">Wealth History Table</h1>
       <table className="w-full text-sm text-left text-white">
         <thead className="text-xs text-gray-100 uppercase bg-emerald-500 ">
           <tr>

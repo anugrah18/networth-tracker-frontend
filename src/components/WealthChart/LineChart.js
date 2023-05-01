@@ -11,6 +11,7 @@ export default function LineChart(props) {
 
   return (
     <>
+      <h1 className="text-2xl">Wealth History Chart</h1>
       {recordData?.length > 0 ? (
         <div className="">
           <Line
