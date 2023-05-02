@@ -1,8 +1,11 @@
 import { faArrowDown, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useState } from "react";
+import Pagination from "../Paginate/Pagination";
 
 export default function WealthTable(props) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recordsPerPage, setRecordsPerPage] = useState(12);
   const { recordData } = props;
   const tableData = [];
 
@@ -30,11 +33,24 @@ export default function WealthTable(props) {
 
   const tableDataReversed = tableData.reverse();
 
+  //Get current records
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = tableDataReversed.slice(
+    indexOfFirstRecord,
+    indexOfLastRecord
+  );
+
+  //Change Page
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <div className="m-auto p-5">
       <h1 className="text-2xl mb-5 md:text-center">Wealth History Table</h1>
-      <table className="w-full text-sm text-left text-white">
-        <thead className="text-xs text-gray-100 uppercase bg-emerald-500 ">
+      <table className="w-full text-lg text-left text-white">
+        <thead className="text-lg text-gray-100 uppercase bg-emerald-500 ">
           <tr>
             <th scope="col" className="px-6 py-3">
               Month
@@ -60,7 +76,7 @@ export default function WealthTable(props) {
           </tr>
         </thead>
         <tbody>
-          {tableDataReversed.map((row) => (
+          {currentRecords.map((row) => (
             <tr className=" bg-gray-800 border-gray-700" key={row.date}>
               <th
                 scope="row"
@@ -125,6 +141,12 @@ export default function WealthTable(props) {
           ))}
         </tbody>
       </table>
+
+      <Pagination
+        itemsPerPage={recordsPerPage}
+        totalItems={recordData.length}
+        paginate={paginate}
+      />
     </div>
   );
 }
