@@ -49,8 +49,8 @@ export default function WealthTable(props) {
   return (
     <div className="m-auto p-5">
       <h1 className="text-2xl mb-5 md:text-center">Wealth History Table</h1>
-      <table className="w-full text-lg text-left text-white">
-        <thead className="text-lg text-gray-100 uppercase bg-emerald-500 ">
+      <table className="w-full text-base text-left text-white">
+        <thead className="text-base text-gray-100 uppercase bg-emerald-500 ">
           <tr>
             <th scope="col" className="px-6 py-3">
               Month
