@@ -5,7 +5,7 @@ import Pagination from "../Paginate/Pagination";
 
 export default function WealthTable(props) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [recordsPerPage, setRecordsPerPage] = useState(1);
+  const [recordsPerPage, setRecordsPerPage] = useState(12);
   const { recordData } = props;
   const tableData = [];
 
