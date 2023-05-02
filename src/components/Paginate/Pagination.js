@@ -33,7 +33,7 @@ export default function Pagination(props) {
 
           <li
             onClick={() => paginate(lastPageIndex)}
-            className="px-5 py-3 leading-tight border  rounded-r-lg  bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700 hover:text-white"
+            className="text-lg px-5 py-3 leading-tight border  rounded-r-lg  bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700 hover:text-white"
           >
             Last
           </li>
