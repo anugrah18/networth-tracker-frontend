@@ -5,8 +5,10 @@ import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import LineChart from "./LineChart";
 import WealthTable from "./WealthTable";
+import ToggleButton from "../ToggleButton/ToggleButton";
 
 export default function WealthChart() {
+  const [displayTable, setDisplayTable] = useState(false);
   const { userState } = useContext(UserContext);
   const { recordState } = useContext(RecordContext);
   const recordData = [];
@@ -22,10 +24,21 @@ export default function WealthChart() {
     recordData.push(row);
   });
 
+  const toggleButtonHandler = (status) => {
+    setDisplayTable(status);
+  };
+
   return (
     <div className="mt-10 Portfolio grid h-screen w-screen place-items-center">
-      {/* <LineChart recordData={recordData} /> */}
-      <WealthTable recordData={recordData} />
+      <ToggleButton
+        displayText="Show Table"
+        toggleButtonHandler={toggleButtonHandler}
+      />
+      {displayTable ? (
+        <WealthTable recordData={recordData} />
+      ) : (
+        <LineChart recordData={recordData} />
+      )}
     </div>
   );
 }
