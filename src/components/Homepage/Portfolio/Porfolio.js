@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { RecordContext } from "../../../contexts/RecordContext";
 import { UserContext } from "../../../contexts/UserContext";
@@ -51,7 +51,6 @@ export default function Porfolio() {
           const record_data_clean = recordsParser(recordsData);
 
           setRecordLocalClean(record_data_clean);
-          setRecordState(record_data_clean);
         }
       } catch (error) {
         return;
@@ -102,18 +101,6 @@ export default function Porfolio() {
               {userState?.user?.firstName}{" "}
             </span>
           </h1>
-
-          {/* <p className="md:p-5 px-5 py-3 md:py-0 md:text-xl text-lg">
-        {recordData.length > 0
-          ? "Here is your portfolio summary based on the records."
-          : "You don't have any" +
-            (
-              <a className="text-emerald-500" href="/records">
-                records
-              </a>
-            ) +
-            "currently."}{" "}
-      </p> */}
 
           {recordData.length > 0 && (
             <p className="md:p-5 px-5 py-3 md:py-0 md:text-xl text-lg">
