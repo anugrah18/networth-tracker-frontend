@@ -6,7 +6,6 @@ import { calculateNetworth } from "../../utility/helpers";
 export default function LineChart(props) {
   const { recordData, inflationFiltered } = props;
 
-  console.log(inflationFiltered);
   return (
     <>
       <h1 className="text-2xl">Wealth History Chart</h1>
@@ -31,6 +30,17 @@ export default function LineChart(props) {
                   }),
                   borderColor: "rgb(16, 185, 129)",
                   backgroundColor: "rgb(16, 185, 129)",
+                  tension: 0.2,
+                  yAxisID: "Amount",
+                },
+                {
+                  id: 1,
+                  label: "Inflation",
+                  data: inflationFiltered.map((inflation) => {
+                    return inflation.inflationValue;
+                  }),
+                  borderColor: "rgb(239, 68, 68)",
+                  backgroundColor: "rgb(239, 68, 68)",
                   tension: 0.2,
                   yAxisID: "Amount",
                 },
