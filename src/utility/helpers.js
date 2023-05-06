@@ -21,4 +21,9 @@ const monthMapping = {
   December: "Dec",
 };
 
-export { getAccessTokenFromBrowser, monthMapping };
+const calculateNetworth = (asset, cash, liability) => {
+  const netWorth = (asset + cash - liability).toFixed(2);
+  return netWorth;
+};
+
+export { getAccessTokenFromBrowser, monthMapping, calculateNetworth };

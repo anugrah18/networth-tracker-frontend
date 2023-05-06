@@ -1,14 +1,12 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
+import { calculateNetworth } from "../../utility/helpers";
 
 export default function LineChart(props) {
-  const { recordData } = props;
-  const calculateNetworth = (asset, cash, liability) => {
-    const netWorth = (asset + cash - liability).toFixed(2);
-    return netWorth;
-  };
+  const { recordData, inflationFiltered } = props;
 
+  console.log(inflationFiltered);
   return (
     <>
       <h1 className="text-2xl">Wealth History Chart</h1>
