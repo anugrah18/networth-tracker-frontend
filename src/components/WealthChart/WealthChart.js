@@ -6,11 +6,13 @@ import Chart from "chart.js/auto";
 import LineChart from "./LineChart";
 import WealthTable from "./WealthTable";
 import ToggleButton from "../ToggleButton/ToggleButton";
+import { InflationContext } from "../../contexts/InflationContext";
 
 export default function WealthChart() {
   const [displayTable, setDisplayTable] = useState(false);
   const { userState } = useContext(UserContext);
   const { recordState } = useContext(RecordContext);
+  const { inflationState } = useContext(InflationContext);
   const recordData = [];
 
   //create array of objects for rendering.
@@ -28,6 +30,7 @@ export default function WealthChart() {
     setDisplayTable(status);
   };
 
+  console.log(inflationState);
   return (
     <div className="mt-10 Portfolio grid h-screen w-screen place-items-center">
       <ToggleButton

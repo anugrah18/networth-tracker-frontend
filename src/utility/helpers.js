@@ -7,18 +7,18 @@ const getAccessTokenFromBrowser = () => {
 };
 
 const monthMapping = {
-  Jan: "January",
-  Feb: "February",
-  Mar: "March",
-  Apr: "April",
+  January: "Jan",
+  February: "Feb",
+  March: "Mar",
+  April: "Apr",
   May: "May",
-  Jun: "June",
-  July: "July",
-  Aug: "August",
-  Sep: "September",
-  Oct: "October",
-  Nov: "November",
-  Dec: "December",
+  June: "Jun",
+  July: "Jul",
+  August: "Aug",
+  September: "Sep",
+  October: "Oct",
+  November: "Nov",
+  December: "Dec",
 };
 
-export { getAccessTokenFromBrowser,monthMapping };
+export { getAccessTokenFromBrowser, monthMapping };

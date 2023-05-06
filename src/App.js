@@ -7,6 +7,7 @@ import {
   API_DOMAIN_URL,
   API_GET_ALL_RECORDS,
   API_GET_A_USER_ID,
+  API_GET_INFLATION_DATA,
 } from "./utility/backendAPILinks";
 import { getAccessTokenFromBrowser } from "./utility/helpers";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
@@ -23,10 +24,14 @@ import AdminRoute from "./components/Routes/Private/AdminRoute";
 import WealthChart from "./components/WealthChart/WealthChart";
 import PrivateRoute from "./components/Routes/Private/PrivateRoute";
 import { recordsParser } from "./utility/recordsUtils";
+import { InflationContext } from "./contexts/InflationContext";
 
 function App() {
   const [userState, setUserState] = useState({});
   const [recordState, setRecordState] = useState([]);
+  const [inflationState, setInflationState] = useState([]);
+  let record_data_clean = null;
+  const recordData = [];
 
   const updateUserState = async (access_token) => {
     if (access_token !== null) {
@@ -78,7 +83,7 @@ function App() {
 
         if (recordsData?.data !== null) {
           //Parse records into clean structured format.
-          const record_data_clean = recordsParser(recordsData);
+          record_data_clean = recordsParser(recordsData);
 
           // setRecordState((prev) => ({ ...prev, record_data_clean }))
           setRecordState(record_data_clean);
@@ -89,10 +94,57 @@ function App() {
     }
   };
 
+  const getInflationData = async (recordState) => {
+    const access_token = getAccessTokenFromBrowser();
+    if (access_token !== null) {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      };
+
+      //http calls for getting records data
+      try {
+        recordState.forEach(function (value, key, map) {
+          let row = {
+            date: key,
+            cash: value.cash,
+            asset: value.asset,
+            liability: value.liability,
+          };
+
+          recordData.push(row);
+        });
+
+        //getting inflation data
+        if (recordData != []) {
+          const startyear = recordData[0]?.date.split("_")[1];
+          const endyear =
+            recordData[recordData?.length - 1]?.date.split("_")[1];
+          const data = {
+            startyear: parseInt(startyear),
+            endyear: parseInt(endyear),
+          };
+
+          const { data: inflationData } = await axios.post(
+            `${API_DOMAIN_URL}/${API_GET_INFLATION_DATA}`,
+            data,
+            config
+          );
+
+          setInflationState(inflationData.inflation_final);
+        }
+      } catch (error) {
+        return;
+      }
+    }
+  };
+
   const detectLoginStatus = async () => {
     const access_token = getAccessTokenFromBrowser();
-    updateUserState(access_token);    
-    updateRecordState(access_token);
+    updateUserState(access_token);
+    await updateRecordState(access_token);
+    getInflationData(record_data_clean);
   };
 
   useEffect(() => {
@@ -133,7 +185,11 @@ function App() {
                   <RecordContext.Provider
                     value={{ recordState, setRecordState }}
                   >
-                    <PrivateRoute component={WealthChart} />
+                    <InflationContext.Provider
+                      value={{ inflationState, setInflationState }}
+                    >
+                      <PrivateRoute component={WealthChart} />
+                    </InflationContext.Provider>
                   </RecordContext.Provider>
                 </UserContext.Provider>
               }
