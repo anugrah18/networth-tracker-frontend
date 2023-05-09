@@ -25,6 +25,7 @@ import WealthChart from "./components/WealthChart/WealthChart";
 import PrivateRoute from "./components/Routes/Private/PrivateRoute";
 import { recordsParser } from "./utility/recordsUtils";
 import { InflationContext } from "./contexts/InflationContext";
+import RecordList from "./components/Record/RecordList";
 
 function App() {
   const [userState, setUserState] = useState({});
@@ -210,6 +211,16 @@ function App() {
                 </UserContext.Provider>
               }
             ></Route>
+            <Route
+              path="/records"
+              element={
+                <UserContext.Provider value={{ userState, setUserState }}>
+                  <PrivateRoute component={RecordList} />
+                </UserContext.Provider>
+              }
+            >
+              {" "}
+            </Route>
           </Routes>
         </div>
       </BrowserRouter>
