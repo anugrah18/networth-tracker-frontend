@@ -5,12 +5,14 @@ import React, { useEffect, useState } from "react";
 import {
   API_DOMAIN_URL,
   API_GET_ALL_RECORDS,
-  API_GET_A_USER,
 } from "../../utility/backendAPILinks";
 import { getAccessTokenFromBrowser } from "../../utility/helpers";
+import Pagination from "../Paginate/Pagination";
 
 export default function RecordList() {
   const [recordData, setRecordData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [recordsPerPage, setRecordsPerPage] = useState(10);
   const getRecords = async (access_token) => {
     if (access_token !== null) {
       const config = {
@@ -41,9 +43,21 @@ export default function RecordList() {
     const access_token = getAccessTokenFromBrowser();
     updateRecords(access_token).then(async (records) => {
       await setRecordData(records.reverse());
-      console.log(recordData);
     });
   }, []);
+
+  //Get current records
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = recordData.slice(
+    indexOfFirstRecord,
+    indexOfLastRecord
+  );
+
+  //Change Page
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <div className="mt-20 flex flex-col">
@@ -101,7 +115,7 @@ export default function RecordList() {
                 </tr>
               </thead>
               <tbody>
-                {recordData.map((record) => (
+                {currentRecords.map((record) => (
                   <tr
                     className=" bg-gray-800 border-gray-700 hover:bg-green-600 hover:text-gray-800 hover:font-bold"
                     key={record.recordId}
@@ -125,6 +139,12 @@ export default function RecordList() {
                 ))}
               </tbody>
             </table>
+
+            <Pagination
+              itemsPerPage={recordsPerPage}
+              totalItems={recordData.length}
+              paginate={paginate}
+            />
           </div>
         )}
       </div>
