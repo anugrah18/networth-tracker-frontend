@@ -23,6 +23,10 @@ export default function RecordModal(props) {
     onSubmit: async (values) => {
       try {
         setErrorMessage("");
+        if (values.itemCategory === "None" || values.itemCategory === null) {
+          setErrorMessage("Category cannot be None");
+          return;
+        }
 
         const req = {
           recordDate: values.itemDate,
@@ -44,6 +48,12 @@ export default function RecordModal(props) {
         );
       }
     },
+
+    validationSchema: Yup.object({
+      itemValue: Yup.number().required("Item Value is required"),
+      itemDescription: Yup.string().required("Item Description is required"),
+      itemDate: Yup.date().required("Item Date is required"),
+    }),
   });
 
   const handleCross = () => {
@@ -63,9 +73,13 @@ export default function RecordModal(props) {
       <form onSubmit={formik.handleSubmit}>
         <div className="Dialog w-72 p-6 rounded shadow-lg z-20 bg-white">
           {/* Heading */}
+
           <div className="text-center">
             <h1 className="text-2xl my-4 font-bold font-sans">{heading}</h1>
           </div>
+          {errorMessage !== "" && (
+            <p className="text-red-500 font-bold">{errorMessage}</p>
+          )}
 
           {/* Item Value */}
           <label className="text-gray-700 font-bold">Item Value ($)</label>
@@ -77,6 +91,12 @@ export default function RecordModal(props) {
             placeholder="0.00"
             onChange={formik.handleChange}
           />
+          {/* Item Value Error */}
+          <div className="error text-red-500 font-bold">
+            {formik.errors.itemValue &&
+              formik.touched.itemValue &&
+              formik.errors.itemValue}
+          </div>
 
           {/* Item Description */}
           <label className="text-gray-700 font-bold">Item Description</label>
@@ -86,6 +106,12 @@ export default function RecordModal(props) {
             name="itemDescription"
             onChange={formik.handleChange}
           />
+          {/* Item Description Error */}
+          <div className="error text-red-500 font-bold">
+            {formik.errors.itemDescription &&
+              formik.touched.itemDescription &&
+              formik.errors.itemDescription}
+          </div>
 
           {/* Item Date */}
           <label className="text-gray-700 font-bold">Date</label>
@@ -95,6 +121,13 @@ export default function RecordModal(props) {
             name="itemDate"
             onChange={formik.handleChange}
           />
+
+          {/* Item Date Error */}
+          <div className="error text-red-500 font-bold">
+            {formik.errors.itemDate &&
+              formik.touched.itemDate &&
+              formik.errors.itemDate}
+          </div>
 
           {/* Item Category */}
           <label className="text-gray-700 font-bold">Category</label>
@@ -120,6 +153,11 @@ export default function RecordModal(props) {
           ) : (
             <span></span>
           )}
+
+          {/* Item Date Error */}
+          <div className="error text-red-500 font-bold">
+            {formik.errors.itemTypes && formik.errors.itemTypes}
+          </div>
 
           {/* Action Button */}
           <div className="text-center ">
