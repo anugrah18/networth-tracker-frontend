@@ -14,6 +14,9 @@ const API_RESET_PASSWORD = "api/users/password/reset";
 const API_GET_ALL_RECORDS = "api/records";
 const API_GET_INFLATION_DATA = "api/records/inflationData";
 
+//itemTypes
+const API_GET_ALL_ITEMTYPES = "api/itemtypes";
+
 export {
   API_DOMAIN_URL,
   API_LOGIN_URL,
@@ -24,4 +27,5 @@ export {
   API_RESET_PASSWORD,
   API_GET_ALL_RECORDS,
   API_GET_INFLATION_DATA,
+  API_GET_ALL_ITEMTYPES,
 };

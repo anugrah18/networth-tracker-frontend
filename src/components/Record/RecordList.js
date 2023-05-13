@@ -1,18 +1,40 @@
-import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPenToSquare,
+  faTrash,
+  faCirclePlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {
   API_DOMAIN_URL,
   API_GET_ALL_RECORDS,
+  API_GET_ALL_ITEMTYPES,
 } from "../../utility/backendAPILinks";
 import { getAccessTokenFromBrowser } from "../../utility/helpers";
+import RecordModal from "../Modals/RecordModal";
 import Pagination from "../Paginate/Pagination";
 
 export default function RecordList() {
   const [recordData, setRecordData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage, setRecordsPerPage] = useState(10);
+  const [itemTypes, setItemTypes] = useState([]);
+  const [addRecordDisplay, setAddRecordDisplay] = useState(false);
+  const [addRecordModalContent, setAddRecordModalContent] = useState({});
+
+  const getAllItemTypes = async () => {
+    try {
+      const response = await fetch(
+        `${API_DOMAIN_URL}/${API_GET_ALL_ITEMTYPES}`
+      );
+      return await response.json();
+    } catch (error) {
+      console.log(error);
+      return;
+    }
+  };
+
   const getRecords = async (access_token) => {
     if (access_token !== null) {
       const config = {
@@ -59,9 +81,38 @@ export default function RecordList() {
     setCurrentPage(pageNumber);
   };
 
+  const AddRecordHandler = async () => {
+    setAddRecordDisplay(true);
+    const itemTypesResult = await getAllItemTypes();
+
+    setItemTypes(itemTypesResult);
+
+    const addRecordData = {
+      heading: "Add Record",
+      type: "Add",
+      buttonText: "Add",
+      itemTypes: itemTypesResult,
+      modalDisplay: true,
+    };
+
+    setAddRecordModalContent(addRecordData);
+  };
+
   return (
     <div className="mt-20 flex flex-col">
       <div className="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        {addRecordDisplay && (
+          <RecordModal content={addRecordModalContent} itemTypes={itemTypes} />
+        )}
+        <div className="flex justify-center">
+          <button
+            className="bg-gray-800 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded mx-10 mb-20 text-2xl"
+            onClick={AddRecordHandler}
+          >
+            <FontAwesomeIcon icon={faCirclePlus}> </FontAwesomeIcon> Record
+          </button>
+        </div>
+
         {recordData.length === 0 ? (
           <p className="text-center text-2xl">No records found.</p>
         ) : (
