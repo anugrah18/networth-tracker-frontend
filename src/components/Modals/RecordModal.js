@@ -14,9 +14,7 @@ export default function RecordModal(props) {
   const heading = props.content.heading;
   const buttonText = props.content.buttonText;
   const itemTypes = props.content.itemTypes;
-  const [displayModal, setDisplayModal] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -84,18 +82,14 @@ export default function RecordModal(props) {
   });
 
   const handleCross = () => {
-    window.location.reload(true);
+    // window.location.reload(true);
+    props.modalDisplayToggle(false);
   };
-
-  useEffect(() => {
-    setDisplayModal(true);
-  }, []);
 
   return (
     <div
-      className={`Modal fixed top-0 left-0 items-center justify-center z-10 ${
-        !displayModal ? "hidden" : ""
-      }`}
+      className="Modal fixed top-0 left-0 items-center justify-center z-10 
+      "
     >
       <form onSubmit={formik.handleSubmit}>
         <div className="Dialog w-72 p-6 rounded shadow-lg z-20 bg-white">

@@ -102,7 +102,11 @@ export default function RecordList() {
     <div className="mt-20 flex flex-col">
       <div className="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         {addRecordDisplay && (
-          <RecordModal content={addRecordModalContent} itemTypes={itemTypes} />
+          <RecordModal
+            content={addRecordModalContent}
+            itemTypes={itemTypes}
+            modalDisplayToggle={setAddRecordDisplay}
+          />
         )}
         <div className="flex justify-center">
           <button
