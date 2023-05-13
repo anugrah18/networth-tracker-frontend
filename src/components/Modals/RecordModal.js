@@ -5,6 +5,10 @@ import { faPlusCircle, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 
 import { useFormik, Form } from "formik";
 import * as Yup from "yup";
+import LoadingSpinner from "../Loading/LoadingSpinner";
+import { getAccessTokenFromBrowser } from "../../utility/helpers";
+import axios from "axios";
+import { API_DOMAIN_URL, API_POST_RECORD } from "../../utility/backendAPILinks";
 
 export default function RecordModal(props) {
   const heading = props.content.heading;
@@ -12,6 +16,7 @@ export default function RecordModal(props) {
   const itemTypes = props.content.itemTypes;
   const [displayModal, setDisplayModal] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -35,11 +40,33 @@ export default function RecordModal(props) {
           itemTypeId: parseInt(values.itemCategory),
         };
 
-        console.log(req);
+        const access_token = getAccessTokenFromBrowser();
 
-        return;
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+          },
+        };
+
+        const resp = await axios.post(
+          `${API_DOMAIN_URL}/${API_POST_RECORD}`,
+          req,
+          config
+        );
+
+        console.log(resp);
+
+        if (resp.status === 200) {
+          window.location.reload(true);
+          return;
+        } else {
+          setErrorMessage(
+            "Cannot add record , please check all fields and try again."
+          );
+        }
       } catch (error) {
-        if (error.response.status === 409) {
+        if (error?.response?.status === 409) {
           setErrorMessage(`Error : ${error.response.data.message}`);
           return;
         }
