@@ -12,7 +12,8 @@ import {
   API_GET_ALL_ITEMTYPES,
 } from "../../utility/backendAPILinks";
 import { getAccessTokenFromBrowser } from "../../utility/helpers";
-import RecordModal from "../Modals/RecordModal";
+import AddRecordModal from "../Modals/AddRecordModal";
+import EditRecordModal from "../Modals/EditRecordModal";
 import Pagination from "../Paginate/Pagination";
 
 export default function RecordList() {
@@ -22,6 +23,9 @@ export default function RecordList() {
   const [itemTypes, setItemTypes] = useState([]);
   const [addRecordDisplay, setAddRecordDisplay] = useState(false);
   const [addRecordModalContent, setAddRecordModalContent] = useState({});
+  const [editRecordDisplay, setEditRecordDisplay] = useState(false);
+  const [editRecordModalContent, setEditRecordModalContent] = useState({});
+  const [currentRecordRow, setCurrentRecordRow] = useState({});
 
   const getAllItemTypes = async () => {
     try {
@@ -98,14 +102,38 @@ export default function RecordList() {
     setAddRecordModalContent(addRecordData);
   };
 
+  const editRecordHandler = async (recordDetails) => {
+    setEditRecordDisplay(true);
+    const itemTypesResult = await getAllItemTypes();
+
+    setItemTypes(itemTypesResult);
+    const editRecordModalContentDetails = {
+      heading: `Edit Record (id : ${recordDetails.recordId})`,
+      type: "Edit",
+      buttonText: "Edit",
+      itemTypes: itemTypesResult,
+      recordId: recordDetails.recordId,
+      modalDisplay: true,
+    };
+    setEditRecordModalContent(editRecordModalContentDetails);
+    setCurrentRecordRow(recordDetails);
+  };
+
   return (
     <div className="mt-20 flex flex-col">
       <div className="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         {addRecordDisplay && (
-          <RecordModal
+          <AddRecordModal
             content={addRecordModalContent}
             itemTypes={itemTypes}
             modalDisplayToggle={setAddRecordDisplay}
+          />
+        )}
+        {editRecordDisplay && (
+          <EditRecordModal
+            content={editRecordModalContent}
+            recordDetails={currentRecordRow}
+            modalDisplayToggle={setEditRecordDisplay}
           />
         )}
         <div className="flex justify-center">
@@ -184,8 +212,16 @@ export default function RecordList() {
                     <td className={`px-6 py-1 `}>
                       {record?.ItemType?.itemCategory}
                     </td>
-                    <td className={`px-6 py-1 text-yellow-600`}>
-                      {<FontAwesomeIcon icon={faPenToSquare} />}
+                    <td
+                      className={`px-6 py-1 text-yellow-600 text-2xl cursor-pointer`}
+                    >
+                      <a
+                        onClick={() => {
+                          editRecordHandler(record);
+                        }}
+                      >
+                        {<FontAwesomeIcon icon={faPenToSquare} />}
+                      </a>
                     </td>
                     <td className={`px-6 py-1 text-red-600`}>
                       {<FontAwesomeIcon icon={faTrash} />}

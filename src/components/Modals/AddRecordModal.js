@@ -10,7 +10,7 @@ import { getAccessTokenFromBrowser } from "../../utility/helpers";
 import axios from "axios";
 import { API_DOMAIN_URL, API_POST_RECORD } from "../../utility/backendAPILinks";
 
-export default function RecordModal(props) {
+export default function AddRecordModal(props) {
   const heading = props.content.heading;
   const buttonText = props.content.buttonText;
   const itemTypes = props.content.itemTypes;
@@ -52,8 +52,6 @@ export default function RecordModal(props) {
           req,
           config
         );
-
-        console.log(resp);
 
         if (resp.status === 200) {
           window.location.reload(true);
