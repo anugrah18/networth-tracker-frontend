@@ -13,6 +13,7 @@ import {
 } from "../../utility/backendAPILinks";
 import { getAccessTokenFromBrowser } from "../../utility/helpers";
 import AddRecordModal from "../Modals/AddRecordModal";
+import DeleteRecordModal from "../Modals/DeleteRecordModal";
 import EditRecordModal from "../Modals/EditRecordModal";
 import Pagination from "../Paginate/Pagination";
 
@@ -26,6 +27,8 @@ export default function RecordList() {
   const [editRecordDisplay, setEditRecordDisplay] = useState(false);
   const [editRecordModalContent, setEditRecordModalContent] = useState({});
   const [currentRecordRow, setCurrentRecordRow] = useState({});
+  const [deleteRecordDisplay, setDeleteRecordDisplay] = useState(false);
+  const [deleteRecordModalContent, setDeleteRecordModalContent] = useState({});
 
   const getAllItemTypes = async () => {
     try {
@@ -119,6 +122,20 @@ export default function RecordList() {
     setCurrentRecordRow(recordDetails);
   };
 
+  const deleteRecordHandler = async (recordDetails) => {
+    setDeleteRecordDisplay(true);
+
+    const deleteRecordModalContentDetails = {
+      heading: `Delete Record (id : ${recordDetails.recordId})`,
+      type: "Delete",
+      buttonText: "Delete",
+      recordId: recordDetails.recordId,
+      modalDisplay: true,
+    };
+    setDeleteRecordModalContent(deleteRecordModalContentDetails);
+    setCurrentRecordRow(recordDetails);
+  };
+
   return (
     <div className="mt-20 flex flex-col">
       <div className="my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -136,6 +153,15 @@ export default function RecordList() {
             modalDisplayToggle={setEditRecordDisplay}
           />
         )}
+
+        {deleteRecordDisplay && (
+          <DeleteRecordModal
+            content={deleteRecordModalContent}
+            recordDetails={currentRecordRow}
+            modalDisplayToggle={setDeleteRecordDisplay}
+          />
+        )}
+
         <div className="flex justify-center">
           <button
             className="bg-gray-800 hover:bg-emerald-600 text-white font-bold py-2 px-4 rounded mx-10 mb-20 text-2xl"
@@ -223,8 +249,16 @@ export default function RecordList() {
                         {<FontAwesomeIcon icon={faPenToSquare} />}
                       </a>
                     </td>
-                    <td className={`px-6 py-1 text-red-600`}>
-                      {<FontAwesomeIcon icon={faTrash} />}
+                    <td
+                      className={`px-6 py-1 text-red-600 text-2xl cursor-pointer`}
+                    >
+                      <a
+                        onClick={() => {
+                          deleteRecordHandler(record);
+                        }}
+                      >
+                        {<FontAwesomeIcon icon={faTrash} />}
+                      </a>
                     </td>
                   </tr>
                 ))}
