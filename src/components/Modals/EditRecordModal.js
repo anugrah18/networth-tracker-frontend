@@ -203,7 +203,7 @@ export default function EditRecordModal(props) {
           {/* Action Button */}
           <div className="text-center ">
             <button
-              className="font-bold mt-5 bg-green-600 w-full text-white rounded hover:bg-lime-500 hover:text-gray-800 py-2"
+              className="font-bold mt-5 bg-yellow-600 w-full text-white rounded hover:bg-yellow-500 hover:text-gray-800 py-2"
               //   onClick={handleClick}
               type="submit"
             >

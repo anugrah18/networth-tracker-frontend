@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Modal.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 
 import { useFormik, Form } from "formik";
 import * as Yup from "yup";
@@ -17,7 +17,7 @@ import {
 export default function DeleteRecordModal(props) {
   const heading = props.content.heading;
   const buttonText = props.content.buttonText;
-  const recordId = props.recordId;
+  const recordId = props.content.recordId;
   const [errorMessage, setErrorMessage] = useState("");
 
   const deleteRecordHandler = async () => {
@@ -32,6 +32,8 @@ export default function DeleteRecordModal(props) {
           Authorization: `Bearer ${access_token}`,
         },
       };
+
+      console.log(props);
 
       const resp = await axios.delete(
         `${API_DOMAIN_URL}/${API_DELETE_RECORD}/${recordId}`,
@@ -81,10 +83,10 @@ export default function DeleteRecordModal(props) {
         {/* Action Button */}
         <div className="text-center ">
           <button
-            className="font-bold mt-5 bg-green-600 w-full text-white rounded hover:bg-lime-500 hover:text-gray-800 py-2"
+            className="font-bold mt-5 bg-red-600 w-full text-white rounded hover:bg-red-500 hover:text-gray-800 py-2"
             onClick={deleteRecordHandler}
           >
-            <FontAwesomeIcon icon={faPencil} className="mr-1"></FontAwesomeIcon>
+            <FontAwesomeIcon icon={faTrash} className="mr-1"></FontAwesomeIcon>
             {buttonText}
           </button>
         </div>
