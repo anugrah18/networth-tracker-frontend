@@ -26,6 +26,7 @@ import PrivateRoute from "./components/Routes/Private/PrivateRoute";
 import { recordsParser } from "./utility/recordsUtils";
 import { InflationContext } from "./contexts/InflationContext";
 import RecordList from "./components/Record/RecordList";
+import ChangePassword from "./components/ChangePassword/ChangePassword";
 
 function App() {
   const [userState, setUserState] = useState({});
@@ -197,6 +198,14 @@ function App() {
             ></Route>
             <Route path="/register" element={<Register />}></Route>
             <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+            <Route
+              path="/change-password"
+              element={
+                <UserContext.Provider value={{ userState, setUserState }}>
+                  <PrivateRoute component={ChangePassword} />
+                </UserContext.Provider>
+              }
+            ></Route>
             <Route
               path="/forgot-password/:token"
               element={<ResetPassword />}
