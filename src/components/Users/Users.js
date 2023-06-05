@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { API_DOMAIN_URL, API_GET_USERS } from "../../utility/backendAPILinks";
 import { getAccessTokenFromBrowser } from "../../utility/helpers";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrash,
+  faPenToSquare,
+  faAward,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Users(props) {
@@ -35,6 +39,10 @@ export default function Users(props) {
   }, []);
 
   const deleteUserHandler = async (userDetails) => {
+    console.log(userDetails);
+  };
+
+  const editUserHandler = async (userDetails) => {
     console.log(userDetails);
   };
 
@@ -76,6 +84,12 @@ export default function Users(props) {
                   scope="col"
                   className="px-6 py-3 text-left text-sm font-medium  uppercase tracking-wider"
                 >
+                  Edit User
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-sm font-medium  uppercase tracking-wider"
+                >
                   Delete User
                 </th>
               </tr>
@@ -86,20 +100,36 @@ export default function Users(props) {
                   className=" bg-gray-800 border-gray-700 hover:bg-green-600 hover:text-gray-800 "
                   key={user.userId}
                 >
-                  <td className={`px-6 py-1 `}>{user.userId}</td>
+                  <td className={`px-6 py-1 `}>
+                    {user.userId}{" "}
+                    {user.isAdmin && <FontAwesomeIcon icon={faAward} />}
+                  </td>
                   <td className={`px-6 py-1 `}>{user.firstName}</td>
                   <td className={`px-6 py-1 `}>{user.lastName}</td>
                   <td className={`px-6 py-1 `}>{user.email}</td>
                   <td
-                    className={`px-6 py-1 text-red-600 text-2xl cursor-pointer`}
+                    className={`px-6 py-1 text-yellow-600 text-2xl cursor-pointer`}
                   >
                     <a
                       onClick={() => {
-                        deleteUserHandler(user);
+                        editUserHandler(user);
                       }}
                     >
-                      {<FontAwesomeIcon icon={faTrash} />}
+                      {<FontAwesomeIcon icon={faPenToSquare} />}
                     </a>
+                  </td>
+                  <td
+                    className={`px-6 py-1 text-red-600 text-2xl cursor-pointer`}
+                  >
+                    {!user.isAdmin && (
+                      <a
+                        onClick={() => {
+                          deleteUserHandler(user);
+                        }}
+                      >
+                        {<FontAwesomeIcon icon={faTrash} />}
+                      </a>
+                    )}
                   </td>
                 </tr>
               ))}
