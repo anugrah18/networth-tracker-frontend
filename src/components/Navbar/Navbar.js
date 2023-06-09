@@ -29,21 +29,16 @@ export default function Navbar(props) {
       },
       {
         id: 4,
-        name: "Categories",
-        link: "/records",
-      },
-      {
-        id: 5,
         name: "Users",
         link: "/users",
       },
       {
-        id: 6,
+        id: 5,
         name: "Change Password",
         link: "/change-password",
       },
       {
-        id: 7,
+        id: 6,
         name: "Logout",
         link: "/logout",
       },
