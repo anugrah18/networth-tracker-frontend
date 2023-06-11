@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DeleteUserModal from "../Modals/DeleteUserModal";
+import EditUserModal from "../Modals/EditUserModal";
 
 export default function Users(props) {
   const { User } = props;
@@ -16,6 +17,9 @@ export default function Users(props) {
   const [deleteUserDisplay, setDeleteUserDisplay] = useState(false);
   const [deleteUserModalContent, setDeleteUserModalContent] = useState({});
   const [currentUserRow, setCurrentUserRow] = useState({});
+  const [editUserDisplay, setEditUserDisplay] = useState(false);
+  const [editUserModalContent, setEditUserModalContent] = useState({});
+  const [currentRecordRow, setCurrentRecordRow] = useState({});
 
   const getAllUsers = async (access_token) => {
     try {
@@ -58,7 +62,18 @@ export default function Users(props) {
   };
 
   const editUserHandler = async (userDetails) => {
-    console.log(userDetails);
+    setEditUserDisplay(true);
+
+    const editUserModalContentDetails = {
+      heading: `Edit User (id : ${userDetails.userId})`,
+      type: "Edit",
+      buttonText: "Edit",
+      userId: userDetails.userId,
+      userDetails: userDetails,
+      modalDisplay: true,
+    };
+    setEditUserModalContent(editUserModalContentDetails);
+    setCurrentRecordRow(userDetails);
   };
 
   //Check for admin
@@ -71,6 +86,14 @@ export default function Users(props) {
           modalDisplayToggle={setDeleteUserDisplay}
         />
       )}
+      {editUserDisplay && (
+        <EditUserModal
+          content={editUserModalContent}
+          userDetails={currentRecordRow}
+          modalDisplayToggle={setEditUserDisplay}
+        />
+      )}
+
       {userData.length === 0 && <h2>No Users Found</h2>}
       {userData.length > 0 && (
         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
