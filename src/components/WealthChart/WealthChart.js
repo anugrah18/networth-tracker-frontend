@@ -76,17 +76,30 @@ export default function WealthChart() {
   }
   return (
     <div className="mt-10 Portfolio grid h-screen w-screen place-items-center">
-      <ToggleButton
-        displayText="Show Table"
-        toggleButtonHandler={toggleButtonHandler}
-      />
-      {displayTable ? (
-        <WealthTable recordData={recordData} />
-      ) : (
-        <LineChart
-          recordData={recordData}
-          inflationFiltered={inflationFiltered}
-        />
+      {recordData.length === 0 && (
+        <p className="md:p-5 px-5 py-3 md:py-0 md:text-xl text-lg">
+          You don't have any{" "}
+          <span className="text-emerald-500 hover:text-green-400">
+            <a href="/records">records</a>
+          </span>{" "}
+          currently.
+        </p>
+      )}
+      {recordData.length > 0 && (
+        <>
+          <ToggleButton
+            displayText="Show Table"
+            toggleButtonHandler={toggleButtonHandler}
+          />
+          {displayTable ? (
+            <WealthTable recordData={recordData} />
+          ) : (
+            <LineChart
+              recordData={recordData}
+              inflationFiltered={inflationFiltered}
+            />
+          )}
+        </>
       )}
     </div>
   );
