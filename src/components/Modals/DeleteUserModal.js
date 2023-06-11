@@ -8,19 +8,15 @@ import * as Yup from "yup";
 import LoadingSpinner from "../Loading/LoadingSpinner";
 import { getAccessTokenFromBrowser } from "../../utility/helpers";
 import axios from "axios";
-import {
-  API_DELETE_RECORD,
-  API_DOMAIN_URL,
-  API_EDIT_RECORD,
-} from "../../utility/backendAPILinks";
+import { API_DELETE_USER, API_DOMAIN_URL } from "../../utility/backendAPILinks";
 
-export default function DeleteRecordModal(props) {
+export default function DeleteUserModal(props) {
   const heading = props.content.heading;
   const buttonText = props.content.buttonText;
-  const recordId = props.content.recordId;
+  const userId = props.content.userId;
   const [errorMessage, setErrorMessage] = useState("");
 
-  const deleteRecordHandler = async () => {
+  const deleteUserHandler = async () => {
     try {
       setErrorMessage("");
 
@@ -34,7 +30,7 @@ export default function DeleteRecordModal(props) {
       };
 
       const resp = await axios.delete(
-        `${API_DOMAIN_URL}/${API_DELETE_RECORD}/${recordId}`,
+        `${API_DOMAIN_URL}/${API_DELETE_USER}/${userId}`,
         config
       );
 
@@ -42,14 +38,14 @@ export default function DeleteRecordModal(props) {
         window.location.reload(true);
         return;
       } else {
-        setErrorMessage("Cannot delete record , please try again.");
+        setErrorMessage("Cannot delete user , please try again.");
       }
     } catch (error) {
       if (error?.response?.status === 409) {
         setErrorMessage(`Error : ${error.response.data.message}`);
         return;
       }
-      setErrorMessage("Error : Could not delete records , please try again.");
+      setErrorMessage("Error : Could not delete user , please try again.");
     }
   };
 
@@ -75,14 +71,14 @@ export default function DeleteRecordModal(props) {
 
         <p className="text-2xl my-10">
           {" "}
-          Are you sure you want to delete this record ?
+          Are you sure you want to delete this User ?
         </p>
 
         {/* Action Button */}
         <div className="text-center ">
           <button
             className="font-bold mt-5 bg-red-600 w-full text-white rounded hover:bg-red-500 hover:text-gray-800 py-2"
-            onClick={deleteRecordHandler}
+            onClick={deleteUserHandler}
           >
             <FontAwesomeIcon icon={faTrash} className="mr-1"></FontAwesomeIcon>
             {buttonText}
