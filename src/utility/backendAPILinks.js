@@ -1,6 +1,9 @@
 //Backend Domain URL
 //DEV ONLY
-const API_DOMAIN_URL = "http://localhost:8080";
+// const API_DOMAIN_URL = "http://localhost:8080";
+
+//PROD ONLY
+const API_DOMAIN_URL = "https://networth-tracker.azurewebsites.net";
 
 //users
 const API_LOGIN_URL = "api/users/login";
